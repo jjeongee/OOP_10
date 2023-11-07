@@ -2,30 +2,19 @@ package com.example.samdollar
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import com.example.samdollar.databinding.ActivityMainBinding
+import android.view.ViewGroup
+import net.daum.mf.map.api.MapView
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(R.layout.activity_main)
 
-        fun replaceFragment(frag: Fragment) {
-            supportFragmentManager.beginTransaction().run {
-                replace(binding.frmFrag.id, frag)
-                commit()
-            }
-        }
+        val mapView = MapView(this)
 
-        binding.run {
-            btnMap.setOnClickListener {
-                replace(MapFragment())
-            }
-        }
-
-        setContentView(binding.root)
-
+        val mapViewContainer = findViewById<ViewGroup>(R.id.map_view)
+        mapViewContainer.addView(mapView)
     }
 
 }
