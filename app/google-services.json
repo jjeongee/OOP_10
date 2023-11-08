@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "713879570618",
+    "project_id": "samdollar1280",
+    "storage_bucket": "samdollar1280.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713879570618:android:98149d32a440db1d74da83",
+        "android_client_info": {
+          "package_name": "com.example.samdollar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWQgWsBX56ODUody1JL3P1A9fqXltiYjM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
