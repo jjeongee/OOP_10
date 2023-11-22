@@ -34,6 +34,7 @@ class OwnerActivity : AppCompatActivity() {
         }
 
     }
+    "김철기 제로콜라 압수"
 
 
 }
