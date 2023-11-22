@@ -37,6 +37,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
 }
 
 dependencies {
@@ -54,6 +55,8 @@ dependencies {
 
     // 카드뷰 라이브러리
     implementation("com.makeramen:roundedimageview:2.3.0")
-    implementation("com.android.support:cardview-v7:28.0.0")
-
+    implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 }
+
+
