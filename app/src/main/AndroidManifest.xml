@@ -13,6 +13,9 @@
         android:theme="@style/Theme.SamdollarFront"
         tools:targetApi="31">
         <activity
+            android:name=".MenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".ZzimActivity"
             android:exported="false" />
         <activity
@@ -26,13 +29,8 @@
             android:exported="false" />
         <activity
             android:name=".MainPageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Main2Activity"
-            android:exported="false" />
-        <activity
-            android:name=".DepositActivity"
-            android:exported="true">
+            android:exported="true" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,11 +1,10 @@
-package com.example.samdollar
+package com.example.samdollarfront
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.Button
-import com.example.samdollarfront.R
 
 class OwnerActivity : AppCompatActivity() {
 
@@ -34,7 +33,6 @@ class OwnerActivity : AppCompatActivity() {
         }
 
     }
-    "김철기 제로콜라 압수"
 
 
 }
