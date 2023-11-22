@@ -3,7 +3,10 @@ package com.example.samdollarfront
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
+import android.widget.TextView
+import androidx.cardview.widget.CardView
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -13,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.samdollarfront.databinding.ActivityMainBinding
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.maps.model.Marker
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -41,6 +45,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
     }
 
     /**
@@ -59,6 +64,32 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val boong = LatLng(37.602614, 126.869500)
         mMap.addMarker(MarkerOptions().position(boong).title("화전역 앞 붕어빵"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(boong))
+
+        val cardView = findViewById<CardView>(R.id.card_view)
+
+        googleMap!!.setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
+            override fun onMarkerClick(marker: Marker): Boolean {
+
+                cardView.visibility = View.VISIBLE
+                var storename = findViewById<TextView>(R.id.store_name)
+                var ownerbank = findViewById<TextView>(R.id.owner_bank)
+                var owneracc = findViewById<TextView>(R.id.owner_account)
+                var ownername = findViewById<TextView>(R.id.owner_name)
+                var storestatus = findViewById<TextView>(R.id.store_status)
+                storename.text = "화전역 앞 붕어빵"
+                ownerbank.text = "카카오뱅크"
+                owneracc.text = "3333-20-1234"
+                ownername.text = "민초붕"
+                storestatus.text = "영업 중"
+
+                return false
+            }
+        })
+        googleMap!!.setOnMapClickListener(object : GoogleMap.OnMapClickListener {
+            override fun onMapClick(latLng: LatLng) {
+                cardView.visibility = View.GONE
+            }
+        })
     }
 
 }
