@@ -7,7 +7,7 @@
     android:backgroundTint="#302828"
     android:backgroundTintMode="screen"
     android:orientation="vertical"
-    tools:context=".MainPageActivity">
+    tools:context=".MainActivity">
 
     <Space
         android:id="@+id/space2"
@@ -35,7 +35,7 @@
             android:textSize="25sp" />
 
         <Space
-            android:layout_width="185dp"
+            android:layout_width="175dp"
             android:layout_height="40dp"
             android:soundEffectsEnabled="true" />
         <LinearLayout
@@ -93,5 +93,11 @@
                 android:textSize="10sp" />
         </LinearLayout>
     </LinearLayout>
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
