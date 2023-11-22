@@ -57,11 +57,12 @@
             android:text="사장님용" />
 
         <Space
-            android:layout_width="108dp"
+            android:layout_width="100dp"
             android:layout_height="40dp"
             android:soundEffectsEnabled="true" />
+
         <LinearLayout
-            android:layout_width="42dp"
+            android:layout_width="43dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -129,7 +130,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="420dp" >
+        android:layout_height="420dp"
+        tools:ignore="SpeakableTextPresentCheck">
 
     </ScrollView>
 

@@ -7,7 +7,7 @@
     android:backgroundTint="#302828"
     android:backgroundTintMode="screen"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ZzimActivity">
 
     <Space
         android:id="@+id/space2"
