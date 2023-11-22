@@ -12,6 +12,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.samdollarfront.databinding.ActivityMainBinding
+import com.google.android.gms.location.FusedLocationProviderClient
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -55,9 +56,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         // Add a marker in Sydney and move the camera
-        val marker = LatLng(35.241615, 128.695587)
-        mMap.addMarker(MarkerOptions().position(marker).title("Marker in Seoul"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(marker))
+        val boong = LatLng(37.602614, 126.869500)
+        mMap.addMarker(MarkerOptions().position(boong).title("화전역 앞 붕어빵"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(boong))
     }
 
 }
