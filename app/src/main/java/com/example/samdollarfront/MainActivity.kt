@@ -95,6 +95,23 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     Toast.makeText(this@MainActivity, "계좌번호가 클립보드에 복사되었습니다.", Toast.LENGTH_SHORT).show()
                 }
+
+                val zzim = findViewById<ImageButton>(R.id.zzimButton)
+                zzim.setImageResource(R.drawable.star)
+                var isZzimSelected = false
+
+                zzim.setOnClickListener {
+                    if (isZzimSelected) {
+                        zzim.setImageResource(R.drawable.star)
+                        Toast.makeText(this@MainActivity, "찜 목록에서 제외되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        zzim.setImageResource(R.drawable.zzim)
+                        Toast.makeText(this@MainActivity, "찜 목록에 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
+
+                    isZzimSelected = !isZzimSelected
+                }
                 return false
             }
         })
