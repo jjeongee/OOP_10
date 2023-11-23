@@ -1,5 +1,8 @@
 package com.example.samdollarfront
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +10,8 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+
+import android.widget.Toast
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -82,6 +87,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 ownername.text = "민초붕"
                 storestatus.text = "영업 중"
 
+                val copy = findViewById<ImageButton>(R.id.btn_copy)
+                copy.setOnClickListener {
+                    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip: ClipData = ClipData.newPlainText("계좌번호", owneracc.text.toString())
+                    clipboard.setPrimaryClip(clip)
+
+                    Toast.makeText(this@MainActivity, "계좌번호가 클립보드에 복사되었습니다.", Toast.LENGTH_SHORT).show()
+                }
                 return false
             }
         })
