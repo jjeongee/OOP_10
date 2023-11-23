@@ -20,7 +20,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.samdollarfront.databinding.ActivityMainBinding
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.model.Marker
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -63,7 +62,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
 
         // Add a marker in Sydney and move the camera
         val boong = LatLng(37.602614, 126.869500)
