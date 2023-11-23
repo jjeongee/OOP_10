@@ -63,8 +63,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-
         // Add a marker in Sydney and move the camera
         val boong = LatLng(37.602614, 126.869500)
         mMap.addMarker(MarkerOptions().position(boong).title("화전역 앞 붕어빵"))
