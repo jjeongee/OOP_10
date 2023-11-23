@@ -111,10 +111,10 @@
             android:id="@+id/card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:cardBackgroundColor="#ffffff"
             app:cardCornerRadius="20dp"
-            app:cardElevation="4dp"
-            android:visibility="gone">
+            app:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="398dp"
@@ -155,14 +155,31 @@
                             android:layout_height="wrap_content"
                             android:text="영업 여부"
                             android:textSize="16sp" />
+
                     </LinearLayout>
 
-                    <ImageButton
-                        android:id="@+id/zzimButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/white"
-                        android:src="@drawable/star" />
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <ImageButton
+                            android:id="@+id/zzimButton"
+                            tools:src="@drawable/star"
+                            android:layout_width="66dp"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="@color/white"
+                            android:scaleType="centerCrop"
+                            tools:ignore="SpeakableTextPresentCheck" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -200,7 +217,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:backgroundTint="@color/white"
-                        android:src="@drawable/copyaccount" />
+                        android:src="@drawable/copyaccount"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
                 </LinearLayout>
 
                 <TextView
@@ -210,7 +228,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="7dp"
                     android:text="사장님 이름"
-                    android:textSize="24sp"/>
+                    android:textSize="24sp" />
 
 
             </LinearLayout>
