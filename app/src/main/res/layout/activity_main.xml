@@ -98,7 +98,55 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="68dp"/>
+        android:layout_marginTop="108dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="68dp "
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="14dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
+
+            <ImageButton
+                android:id="@+id/btn_gps"
+                android:layout_width="47dp"
+                android:layout_height="30dp"
+                android:background="@color/white"
+                android:padding="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/gps"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="12dp" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="내 위치" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/card_view_layout"
@@ -112,6 +160,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
             app:cardBackgroundColor="#ffffff"
             app:cardCornerRadius="20dp"
             app:cardElevation="4dp">

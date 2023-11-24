@@ -9,7 +9,7 @@ class MenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
 
-        val ownermainbutton = findViewById<ImageButton>(R.id.btn_ownermain)
+        val ownermainbutton = findViewById<ImageButton>(R.id.btn_main2)
 
         ownermainbutton.setOnClickListener {
             finish()
