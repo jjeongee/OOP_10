@@ -9,7 +9,7 @@ class MineActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mine)
 
-        val ownerbutton = findViewById<ImageButton>(R.id.btn_ownermain)
+        val ownerbutton = findViewById<ImageButton>(R.id.btn_main2)
 
         ownerbutton.setOnClickListener {
             finish()

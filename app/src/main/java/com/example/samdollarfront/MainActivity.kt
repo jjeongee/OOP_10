@@ -1,17 +1,27 @@
 package com.example.samdollarfront
 
+import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-
+import android.Manifest
+import android.location.Location
+import android.os.Looper
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -23,6 +33,7 @@ import com.example.samdollarfront.databinding.ActivityMainBinding
 import com.google.android.gms.maps.model.Marker
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMainBinding
@@ -45,12 +56,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent2)
         }
 
+        val buttontoGps = findViewById<ImageButton>(R.id.btn_gps)
+        buttontoGps.setOnClickListener {
+
+        }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
     }
+
+
 
     /**
      * Manipulates the map once available.
@@ -62,11 +78,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
+
+
+
         mMap = googleMap
+
+
+        val zoomLevel = 17.0f
         // Add a marker in Sydney and move the camera
         val boong = LatLng(37.602614, 126.869500)
+        val startlocation = LatLng(37.5989732, 126.8640908)
         mMap.addMarker(MarkerOptions().position(boong).title("화전역 앞 붕어빵"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(boong))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startlocation, zoomLevel))
 
         val cardView = findViewById<CardView>(R.id.card_view)
 
@@ -84,6 +107,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 owneracc.text = "3333-20-1234"
                 ownername.text = "민초붕"
                 storestatus.text = "영업 중"
+
+                val tostore = findViewById<CardView>(R.id.card_view)
+                tostore.setOnClickListener {
+                    val intent3 = Intent(this@MainActivity, StoreActivity::class.java)
+                    startActivity(intent3)
+                }
 
                 val copy = findViewById<ImageButton>(R.id.btn_copy)
                 copy.setOnClickListener {
@@ -118,6 +147,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 cardView.visibility = View.GONE
             }
         })
+
     }
+
 
 }
