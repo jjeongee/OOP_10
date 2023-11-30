@@ -13,7 +13,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 
-import android.widget.Toast
+
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
@@ -98,6 +98,22 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
+    fun setLastLocation(location: Location) {
+        val myLocation = LatLng(location.latitude, location.longitude)
+        val marker = MarkerOptions()
+            .position(myLocation)
+            .title("내 위치")
+        val cameraOption = CameraPosition.Builder()
+            .target(myLocation)
+            .zoom(17f)
+            .build()
+        val camera = CameraUpdateFactory.newCameraPosition(cameraOption)
+
+        //mMap.clear()
+        mMap.addMarker(marker)
+        mMap.moveCamera(camera)
+    }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -120,7 +136,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         googleMap!!.setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
             override fun onMarkerClick(marker: Marker): Boolean {
-           
+
                 if (marker.title == "내 위치") {
                     cardView.visibility = View.GONE
                 } else {
@@ -183,7 +199,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var locationCallback:LocationCallback
 
     // 좌표계를 주기적으로 갱신해주는 리스너
-    @SuppressLint("MissingPermission")  // 문법 검사기
+  // 문법 검사기
+    @SuppressLint("MissingPermission")
     fun setupdateLocationListener() {
         val locationRequest = LocationRequest.create()
         locationRequest.run {
@@ -202,25 +219,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
-
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
     }
 
-    fun setLastLocation(location: Location) {
-        val myLocation = LatLng(location.latitude, location.longitude)
-        val marker = MarkerOptions()
-            .position(myLocation)
-            .title("내 위치")
-        val cameraOption = CameraPosition.Builder()
-            .target(myLocation)
-            .zoom(17f)
-            .build()
-        val camera = CameraUpdateFactory.newCameraPosition(cameraOption)
 
-        //mMap.clear()
-        mMap.addMarker(marker)
-        mMap.moveCamera(camera)
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
