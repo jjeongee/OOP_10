@@ -128,16 +128,17 @@
         android:text="     실시간 입금"
         android:textSize="24sp" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="420dp"
-        tools:ignore="SpeakableTextPresentCheck">
-
-    </ScrollView>
-
     <Space
         android:layout_width="match_parent"
         android:layout_height="47dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_deposit"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        tools:listitem="@layout/deposit_list">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -154,7 +155,6 @@
             android:layout_height="match_parent"
             android:text="영업 시작" />
     </LinearLayout>
-
     <Space
         android:layout_width="match_parent"
         android:layout_height="47dp" />
