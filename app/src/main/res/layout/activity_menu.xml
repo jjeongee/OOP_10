@@ -7,7 +7,7 @@
     android:backgroundTint="#302828"
     android:backgroundTintMode="screen"
     android:orientation="vertical"
-    tools:context=".StoreActivity">
+    tools:context=".MenuActivity">
 
     <Space
         android:id="@+id/space2"
@@ -37,16 +37,15 @@
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <Space
-            android:layout_width="89dp"
+            android:layout_width="56dp"
             android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="가게 정보"
+            android:text="내 가게 메뉴 수정"
             android:textSize="24sp" />
 
     </LinearLayout>
-
 </LinearLayout>
