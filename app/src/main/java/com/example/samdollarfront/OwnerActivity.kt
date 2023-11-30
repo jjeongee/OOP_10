@@ -42,5 +42,20 @@ class OwnerActivity : AppCompatActivity() {
 
     }
 
+<<<<<<< Updated upstream
+=======
+    private fun fetchDataFromFirebase(depositAdapter: DepositAdapter) {
+        //Database에서 값을 읽어오기
+        val depositRef = database.getReference()
+        depositRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            //data를 받아오는데 성공한 경우
+            override fun onDataChange(datasnapshot: DataSnapshot){
+                depositResult.clear()
+                //snapshot을 이용해서 datasnapshot의 children 객체를 가져옴
+                for (snapshot in datasnapshot.children){
+                    val username=snapshot.child("username").getValue(String::class.java)?:""
+                    val bankname=snapshot.child("bankname").getValue(String::class.java)?:""
+                    val inputmoney=snapshot.child("inputmoney").getValue(Int::class.java)?:0
+>>>>>>> Stashed changes
 
 }
