@@ -12,6 +12,8 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+
+import android.widget.Toast
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
@@ -106,9 +108,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-
-
+      mMap = googleMap
         val zoomLevel = 17.0f
         // Add a marker in Sydney and move the camera
         val boong = LatLng(37.602614, 126.869500)
@@ -120,6 +120,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         googleMap!!.setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
             override fun onMarkerClick(marker: Marker): Boolean {
+           
                 if (marker.title == "내 위치") {
                     cardView.visibility = View.GONE
                 } else {
@@ -166,6 +167,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         isZzimSelected = !isZzimSelected
                     }
+
                 }
                 return false
             }
@@ -175,8 +177,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 cardView.visibility = View.GONE
             }
         })
-
-    }
 
     // -- 내 위치를 가져오는 코드
     lateinit var fusedLocationClient:FusedLocationProviderClient
@@ -203,7 +203,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        // location 요청 함수 호출 (locationRequest, locationCallback)
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
     }
 
