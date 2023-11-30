@@ -13,7 +13,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 
-import android.widget.Toast
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
@@ -42,8 +41,29 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Marker
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+    fun setLastLocation(location: Location) {
+        val myLocation = LatLng(location.latitude, location.longitude)
+        val marker = MarkerOptions()
+            .position(myLocation)
+            .title("내 위치")
+        val cameraOption = CameraPosition.Builder()
+            .target(myLocation)
+            .zoom(17f)
+            .build()
+        val camera = CameraUpdateFactory.newCameraPosition(cameraOption)
 
-    val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        //mMap.clear()
+        mMap.addMarker(marker)
+        mMap.moveCamera(camera)
+    }
+    // -- 내 위치를 가져오는 코드
+    lateinit var fusedLocationClient:FusedLocationProviderClient
+    lateinit var locationCallback: LocationCallback
+
+    val permissions = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
     val PERM_FLAG = 99
 
     private lateinit var mMap: GoogleMap
@@ -81,8 +101,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    fun isPermitted() : Boolean {
-        for(perm in permissions) {
+    fun isPermitted(): Boolean {
+        for (perm in permissions) {
             if (ContextCompat.checkSelfPermission(this, perm) != PERMISSION_GRANTED) {
                 return false
             }
@@ -107,8 +127,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    // 좌표계를 주기적으로 갱신해주는 리스너
+
     override fun onMapReady(googleMap: GoogleMap) {
-      mMap = googleMap
+        mMap = googleMap
         val zoomLevel = 17.0f
         // Add a marker in Sydney and move the camera
         val boong = LatLng(37.602614, 126.869500)
@@ -120,7 +142,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         googleMap!!.setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
             override fun onMarkerClick(marker: Marker): Boolean {
-           
+
                 if (marker.title == "내 위치") {
                     cardView.visibility = View.GONE
                 } else {
@@ -144,11 +166,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     val copy = findViewById<ImageButton>(R.id.btn_copy)
                     copy.setOnClickListener {
-                        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clipboard =
+                            getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         val clip: ClipData = ClipData.newPlainText("계좌번호", owneracc.text.toString())
                         clipboard.setPrimaryClip(clip)
 
-                        Toast.makeText(this@MainActivity, "계좌번호가 클립보드에 복사되었습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@MainActivity,
+                            "계좌번호가 클립보드에 복사되었습니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
                     val zzim = findViewById<ImageButton>(R.id.zzimButton)
@@ -158,11 +185,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     zzim.setOnClickListener {
                         if (isZzimSelected) {
                             zzim.setImageResource(R.drawable.star)
-                            Toast.makeText(this@MainActivity, "찜 목록에서 제외되었습니다.", Toast.LENGTH_SHORT).show()
-                        }
-                        else {
+                            Toast.makeText(this@MainActivity, "찜 목록에서 제외되었습니다.", Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
                             zzim.setImageResource(R.drawable.zzim)
-                            Toast.makeText(this@MainActivity, "찜 목록에 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MainActivity, "찜 목록에 추가되었습니다.", Toast.LENGTH_SHORT)
+                                .show()
                         }
 
                         isZzimSelected = !isZzimSelected
@@ -178,70 +206,59 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         })
 
-    // -- 내 위치를 가져오는 코드
-    lateinit var fusedLocationClient:FusedLocationProviderClient
-    lateinit var locationCallback:LocationCallback
 
-    // 좌표계를 주기적으로 갱신해주는 리스너
-    @SuppressLint("MissingPermission")  // 문법 검사기
-    fun setupdateLocationListener() {
-        val locationRequest = LocationRequest.create()
-        locationRequest.run {
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            //interval = 10000
-            // gps와 네트워크를 다 사용해서 10초에 한번씩 좌표값을 가져옴
-        }
-
-        locationCallback = object : LocationCallback () {
-            override fun onLocationResult(locationResult: LocationResult?) {
-                locationResult?.let {
-                    for ((i, location) in it.locations.withIndex()) {  // 튜플로 사용
-                        Log.d("로케이션", "$i ${location.latitude}, ${location.longitude}")
-                        setLastLocation(location)
+        @SuppressLint("MissingPermission")  // 문법 검사기
+                fun setupdateLocationListener() {
+                    val locationRequest = LocationRequest.create()
+                    locationRequest.run {
+                        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+                        //interval = 10000
+                        // gps와 네트워크를 다 사용해서 10초에 한번씩 좌표값을 가져옴
                     }
-                }
+                    locationCallback = object : LocationCallback() {
+                        override fun onLocationResult(locationResult: LocationResult?) {
+                            locationResult?.let {
+                                for ((i, location) in it.locations.withIndex()) {  // 튜플로 사용
+                                    Log.d("로케이션", "$i ${location.latitude}, ${location.longitude}")
+                                    setLastLocation(location)
+                                }
+                            }
+                        }
+                    }
+                    fusedLocationClient.requestLocationUpdates(
+                        locationRequest,
+                        locationCallback,
+                        Looper.myLooper()
+                    )
             }
+
         }
 
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
-    }
-
-    fun setLastLocation(location: Location) {
-        val myLocation = LatLng(location.latitude, location.longitude)
-        val marker = MarkerOptions()
-            .position(myLocation)
-            .title("내 위치")
-        val cameraOption = CameraPosition.Builder()
-            .target(myLocation)
-            .zoom(17f)
-            .build()
-        val camera = CameraUpdateFactory.newCameraPosition(cameraOption)
-
-        //mMap.clear()
-        mMap.addMarker(marker)
-        mMap.moveCamera(camera)
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode) {
-            PERM_FLAG -> {
-                var check = true
-                for (grant in grantResults) {
-                    if(grant != PERMISSION_GRANTED) {
-                        check = false
-                        break
+        override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+        ) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            when (requestCode) {
+                PERM_FLAG -> {
+                    var check = true
+                    for (grant in grantResults) {
+                        if (grant != PERMISSION_GRANTED) {
+                            check = false
+                            break
+                        }
                     }
-                }
-                if (check) {
-                    startProcess()
-                } else {
-                    Toast.makeText(this@MainActivity, "권한을 승인해야 앱을 사용할 수 있습니다.", Toast.LENGTH_LONG)
-                    finish()
+                    if (check) {
+                        startProcess()
+                    } else {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "권한을 승인해야 앱을 사용할 수 있습니다.",
+                            Toast.LENGTH_LONG
+                        )
+                        finish()
+                    }
                 }
             }
         }

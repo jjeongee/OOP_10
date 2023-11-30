@@ -1,7 +1,6 @@
 package com.example.samdollarfront
 
 import android.content.Intent
-import android.database.DatabaseErrorHandler
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,7 +9,6 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -82,6 +80,7 @@ class OwnerActivity : AppCompatActivity() {
                 for (snapshot in datasnapshot.children){
                     val username=snapshot.child("username").getValue(String::class.java)?:""
                     val bankname=snapshot.child("bankname").getValue(String::class.java)?:""
+                    val inputmoney=snapshot.child("inputmoney").getValue(String::class.java)?:0
 
                     //deposit class를 생성해서 받아옴
                     val deposit= Deposit(username, bankname, inputmoney)
