@@ -42,8 +42,7 @@ class OwnerActivity : AppCompatActivity() {
 
     }
 
-<<<<<<< Updated upstream
-=======
+
     private fun fetchDataFromFirebase(depositAdapter: DepositAdapter) {
         //Database에서 값을 읽어오기
         val depositRef = database.getReference()
@@ -56,6 +55,6 @@ class OwnerActivity : AppCompatActivity() {
                     val username=snapshot.child("username").getValue(String::class.java)?:""
                     val bankname=snapshot.child("bankname").getValue(String::class.java)?:""
                     val inputmoney=snapshot.child("inputmoney").getValue(Int::class.java)?:0
->>>>>>> Stashed changes
+
 
 }
