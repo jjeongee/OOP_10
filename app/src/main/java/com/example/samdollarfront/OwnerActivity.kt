@@ -83,6 +83,7 @@ class OwnerActivity : AppCompatActivity() {
                     val username=snapshot.child("username").getValue(String::class.java)?:""
                     val bankname=snapshot.child("bankname").getValue(String::class.java)?:""
 
+
                     //deposit class를 생성해서 받아옴
                     val deposit= Deposit(username, bankname, inputmoney)
                     depositResult.add(deposit)
