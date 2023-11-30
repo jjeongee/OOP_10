@@ -178,7 +178,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         })
 
-    // -- 내 위치를 가져오는 코드
+
+    }
+    // 내 위치를 가져오는 코드
+
     lateinit var fusedLocationClient:FusedLocationProviderClient
     lateinit var locationCallback:LocationCallback
 
