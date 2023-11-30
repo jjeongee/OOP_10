@@ -82,7 +82,6 @@ class OwnerActivity : AppCompatActivity() {
                 for (snapshot in datasnapshot.children){
                     val username=snapshot.child("username").getValue(String::class.java)?:""
                     val bankname=snapshot.child("bankname").getValue(String::class.java)?:""
-                    val inputmoney=snapshot.child("inpumoney").getValue(Int::class.java)?:0
 
                     //deposit class를 생성해서 받아옴
                     val deposit= Deposit(username, bankname, inputmoney)
