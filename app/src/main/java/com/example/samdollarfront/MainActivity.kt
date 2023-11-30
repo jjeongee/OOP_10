@@ -120,49 +120,52 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         googleMap!!.setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
             override fun onMarkerClick(marker: Marker): Boolean {
+                if (marker.title == "내 위치") {
+                    cardView.visibility = View.GONE
+                } else {
+                    cardView.visibility = View.VISIBLE
+                    var storename = findViewById<TextView>(R.id.store_name)
+                    var ownerbank = findViewById<TextView>(R.id.owner_bank)
+                    var owneracc = findViewById<TextView>(R.id.owner_account)
+                    var ownername = findViewById<TextView>(R.id.owner_name)
+                    var storestatus = findViewById<TextView>(R.id.store_status)
+                    storename.text = "화전역 앞 붕어빵"
+                    ownerbank.text = "카카오뱅크"
+                    owneracc.text = "3333-20-1234"
+                    ownername.text = "민초붕"
+                    storestatus.text = "영업 중"
 
-                cardView.visibility = View.VISIBLE
-                var storename = findViewById<TextView>(R.id.store_name)
-                var ownerbank = findViewById<TextView>(R.id.owner_bank)
-                var owneracc = findViewById<TextView>(R.id.owner_account)
-                var ownername = findViewById<TextView>(R.id.owner_name)
-                var storestatus = findViewById<TextView>(R.id.store_status)
-                storename.text = "화전역 앞 붕어빵"
-                ownerbank.text = "카카오뱅크"
-                owneracc.text = "3333-20-1234"
-                ownername.text = "민초붕"
-                storestatus.text = "영업 중"
-
-                val tostore = findViewById<CardView>(R.id.card_view)
-                tostore.setOnClickListener {
-                    val intent3 = Intent(this@MainActivity, StoreActivity::class.java)
-                    startActivity(intent3)
-                }
-
-                val copy = findViewById<ImageButton>(R.id.btn_copy)
-                copy.setOnClickListener {
-                    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip: ClipData = ClipData.newPlainText("계좌번호", owneracc.text.toString())
-                    clipboard.setPrimaryClip(clip)
-
-                    Toast.makeText(this@MainActivity, "계좌번호가 클립보드에 복사되었습니다.", Toast.LENGTH_SHORT).show()
-                }
-
-                val zzim = findViewById<ImageButton>(R.id.zzimButton)
-                zzim.setImageResource(R.drawable.star)
-                var isZzimSelected = false
-
-                zzim.setOnClickListener {
-                    if (isZzimSelected) {
-                        zzim.setImageResource(R.drawable.star)
-                        Toast.makeText(this@MainActivity, "찜 목록에서 제외되었습니다.", Toast.LENGTH_SHORT).show()
-                    }
-                    else {
-                        zzim.setImageResource(R.drawable.zzim)
-                        Toast.makeText(this@MainActivity, "찜 목록에 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                    val tostore = findViewById<CardView>(R.id.card_view)
+                    tostore.setOnClickListener {
+                        val intent3 = Intent(this@MainActivity, StoreActivity::class.java)
+                        startActivity(intent3)
                     }
 
-                    isZzimSelected = !isZzimSelected
+                    val copy = findViewById<ImageButton>(R.id.btn_copy)
+                    copy.setOnClickListener {
+                        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip: ClipData = ClipData.newPlainText("계좌번호", owneracc.text.toString())
+                        clipboard.setPrimaryClip(clip)
+
+                        Toast.makeText(this@MainActivity, "계좌번호가 클립보드에 복사되었습니다.", Toast.LENGTH_SHORT).show()
+                    }
+
+                    val zzim = findViewById<ImageButton>(R.id.zzimButton)
+                    zzim.setImageResource(R.drawable.star)
+                    var isZzimSelected = false
+
+                    zzim.setOnClickListener {
+                        if (isZzimSelected) {
+                            zzim.setImageResource(R.drawable.star)
+                            Toast.makeText(this@MainActivity, "찜 목록에서 제외되었습니다.", Toast.LENGTH_SHORT).show()
+                        }
+                        else {
+                            zzim.setImageResource(R.drawable.zzim)
+                            Toast.makeText(this@MainActivity, "찜 목록에 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                        }
+
+                        isZzimSelected = !isZzimSelected
+                    }
                 }
                 return false
             }
@@ -185,7 +188,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val locationRequest = LocationRequest.create()
         locationRequest.run {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            interval = 10000
+            //interval = 10000
             // gps와 네트워크를 다 사용해서 10초에 한번씩 좌표값을 가져옴
         }
 
