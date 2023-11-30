@@ -36,4 +36,19 @@ class OwnerActivity : AppCompatActivity() {
     }
 
 
+<<<<<<< Updated upstream
+=======
+                    //deposit class를 생성해서 받아옴
+                    val deposit= Deposit(username, bankname, inputmoney)
+                    depositResult.add(deposit)
+                }
+                depositAdapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+    }
+
+>>>>>>> Stashed changes
 }
