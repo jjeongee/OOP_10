@@ -4,15 +4,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 
-class MineActivity : AppCompatActivity() {
+class MenuActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_mine)
+        setContentView(R.layout.activity_menu)
 
-        val ownerbutton = findViewById<ImageButton>(R.id.btn_main2)
+        val ownermainbutton = findViewById<ImageButton>(R.id.btn_main2)
 
-        ownerbutton.setOnClickListener {
+        ownermainbutton.setOnClickListener {
             finish()
         }
     }
+
 }

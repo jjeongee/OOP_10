@@ -1,4 +1,4 @@
-package com.example.samdollar
+package com.example.samdollarfront
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
