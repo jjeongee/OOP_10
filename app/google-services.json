@@ -1,13 +1,33 @@
 {
   "project_info": {
-    "project_number": "713879570618",
-    "project_id": "samdollar1280",
-    "storage_bucket": "https://samdollar1280-default-rtdb.firebaseio.com/"
+    "project_number": "821981968542",
+    "firebase_url": "https://scary-ce2d0-default-rtdb.firebaseio.com",
+    "project_id": "scary-ce2d0",
+    "storage_bucket": "scary-ce2d0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:713879570618:android:214faf0ca848920374da83",
+        "mobilesdk_app_id": "1:821981968542:android:3b9b18457c201be112238f",
+        "android_client_info": {
+          "package_name": "com.example.recycler"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBOjeAnNic2tmW-WPUl4mKujYMfViNDAc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821981968542:android:51f4ad1720531b3112238f",
         "android_client_info": {
           "package_name": "com.example.samdollarfront"
         }
@@ -15,7 +35,26 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAWQgWsBX56ODUody1JL3P1A9fqXltiYjM"
+          "current_key": "AIzaSyDBOjeAnNic2tmW-WPUl4mKujYMfViNDAc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821981968542:android:c4639525b45ad82012238f",
+        "android_client_info": {
+          "package_name": "com.example.scary"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBOjeAnNic2tmW-WPUl4mKujYMfViNDAc"
         }
       ],
       "services": {

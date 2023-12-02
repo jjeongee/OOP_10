@@ -13,12 +13,13 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 
-import android.widget.Toast
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
 import android.os.Looper
 import android.util.Log
+import android.widget.Button
+import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -40,6 +41,12 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Marker
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -49,11 +56,45 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMainBinding
 
+    private lateinit var database: DatabaseReference
+    val store_namelist = ArrayList<String>()
+    val accountlist = ArrayList<String>()
+    val combinedList = ArrayList<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val listView: ListView = findViewById(R.id.listview)
+
+        val list = ArrayList<StoreData>()
+        list.add(StoreData("화전역 앞 붕어빵", "3333-12-3456"))
+        list.add(StoreData("행신동 역할맥 앞 붕어빵", "3333-12-7890"))
+        list.add(StoreData("홍대입구 9번출구 쪽 계란빵", "1002-12-3456"))
+
+        val adapter = StoreAdapter(this, list)
+        listView.adapter = adapter
+
+        listView.setOnItemClickListener{ parent, view, position, id ->
+            val intent3 = Intent(this@MainActivity, StoreActivity::class.java)
+            startActivity(intent3)
+        }
+        database = FirebaseDatabase.getInstance().getReference().child("Store")
+
+        /*database.addValueEventListener(object: ValueEventListener {
+            override fun onCancelled(dataSnapshot: DatabaseError) {
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (data in dataSnapshot.children) {
+                    val storeResult = data.getValue(Store::class.java)
+                    store_namelist.add(storeResult?.name.toString())
+                }
+                list_adapter.notifyDataSetChanged()
+            }
+        })*/
 
         val buttontoOwner = findViewById<ImageButton>(R.id.btn_owner)
         buttontoOwner.setOnClickListener {
@@ -71,6 +112,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         buttontoGps.setOnClickListener {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
             setupdateLocationListener()
+        }
+
+        val buttontolist = findViewById<Button>(R.id.btn_showlist)
+        buttontolist.setOnClickListener {
+            val cardview_list = findViewById<CardView>(R.id.list_card_view)
+            cardview_list.visibility = View.VISIBLE
         }
 
         if (isPermitted()) {
@@ -108,7 +155,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-      mMap = googleMap
+        mMap = googleMap
         val zoomLevel = 17.0f
         // Add a marker in Sydney and move the camera
         val boong = LatLng(37.602614, 126.869500)
