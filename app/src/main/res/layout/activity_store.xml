@@ -49,4 +49,140 @@
 
     </LinearLayout>
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="21dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/store_txt_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Storename"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="23dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="49dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/text10"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="은행: " />
+
+        <TextView
+            android:id="@+id/store_txt_bank"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:text="bank" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="49dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/text11"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="계좌번호: " />
+
+        <TextView
+            android:id="@+id/store_txt_account"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:text="account" />
+
+        <Space
+            android:layout_width="76dp"
+            android:layout_height="match_parent" />
+
+        <ImageButton
+            android:id="@+id/btn_copy_store"
+            android:layout_width="41dp"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/white"
+            android:scaleType="centerCrop"
+            android:src="@drawable/copyaccount"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="49dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/text12"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="사장님 이름: " />
+
+        <TextView
+            android:id="@+id/store_txt_ownername"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:text="ownername" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="49dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="93dp"
+            android:layout_height="match_parent"
+            android:text="메뉴"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="49dp"
+            android:layout_height="match_parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
 </LinearLayout>

@@ -5,7 +5,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -19,11 +18,7 @@ import android.location.Location
 import android.os.Looper
 import android.util.Log
 import android.widget.Button
-import android.widget.ListView
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -42,11 +37,8 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Marker
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -61,6 +53,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var database: DatabaseReference
+    val list = ArrayList<StoreData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,11 +63,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val recyclerView: RecyclerView = findViewById(R.id.lstUser)
 
-        val list = ArrayList<StoreData>()
         list.apply {
-            add(StoreData("화전역 앞 붕어빵", "3333-12-3456"))
-            add(StoreData("행신동 역할맥 앞 붕어빵", "3333-12-7890"))
-            add(StoreData("홍대입구 9번출구 쪽 계란빵", "1002-12-3456"))
+            add(StoreData("화전역 앞 붕어빵", "3333-12-3456", "카카오뱅크", "민초붕" , 37.602614, 126.869500))
+            add(StoreData("행신동 역할맥 앞 붕어빵", "3333-12-7890", "카카오뱅크", "이희정", 37.615021, 126.834680))
+            add(StoreData("홍대입구 9번출구 쪽 계란빵", "1002-12-3456", "우리은행" , "노기범", 37.555726, 126.923362))
         }
 
         val adapter = StoreAdapter(list, {data -> adapterOnClick(data)})
@@ -136,6 +128,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun adapterOnClick(data: StoreData) {
         val intent = Intent(this, StoreActivity::class.java)
+        intent.putExtra("name", "${data.name}")
+        intent.putExtra("account", "${data.account}")
+        intent.putExtra("bank", "${data.bank}")
+        intent.putExtra("ownername", "${data.ownername}")
+
         startActivity(intent)
     }
 
@@ -169,13 +166,35 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         val zoomLevel = 17.0f
         // Add a marker in Sydney and move the camera
-        val boong = LatLng(37.602614, 126.869500)
         val startlocation = LatLng(37.5989732, 126.8640908)
-        mMap.addMarker(MarkerOptions().position(boong).title("화전역 앞 붕어빵"))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startlocation, zoomLevel))
 
-        val cardView = findViewById<CardView>(R.id.card_view)
+        for (storeData in list) {
+            val latLng = LatLng(storeData.lat, storeData.lng)
+            mMap.addMarker(MarkerOptions().position(latLng).title(storeData.name))
+        }
 
+        /*fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            location?.let{
+                setLastLocation(location)
+
+                //거리계산
+                for (storeData in list) {
+                    val latLng = LatLng(storeData.lat, storeData.lng)
+                    val distance = location.distanceTo(Location("").apply {
+                        latitude = storeData.lat
+                        longitude = storeData.lng
+                    })
+
+                    val distanceText = "${"%.2f".format(distance/10000)}m 떨어짐"
+                    val viewHolder = recyclerView.findViewHolderForAdapterPosition(list.indexOf(storeData)) as StoreAdapter.ViewHolder?
+                    viewHolder?.updateDistance(distanceText)
+                }
+            }
+        }*/
+
+        val cardView = findViewById<CardView>(R.id.card_view)
+        val cardview_list = findViewById<CardView>(R.id.list_card_view)
         googleMap!!.setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
             override fun onMarkerClick(marker: Marker): Boolean {
 
@@ -183,24 +202,29 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     cardView.visibility = View.GONE
                 } else {
                     cardView.visibility = View.VISIBLE
+                    val clickedStoreData = findStoreDataByName(marker.title)
                     var storename = findViewById<TextView>(R.id.store_name)
                     var ownerbank = findViewById<TextView>(R.id.owner_bank)
                     var owneracc = findViewById<TextView>(R.id.owner_account)
                     var ownername = findViewById<TextView>(R.id.owner_name)
-                    var storestatus = findViewById<TextView>(R.id.store_status)
-                    storename.text = "화전역 앞 붕어빵"
-                    ownerbank.text = "카카오뱅크"
-                    owneracc.text = "3333-20-1234"
-                    ownername.text = "민초붕"
-                    storestatus.text = "영업 중"
+                    //var storestatus = findViewById<TextView>(R.id.store_status)
+                    storename.text = clickedStoreData?.name
+                    ownerbank.text = clickedStoreData?.bank
+                    owneracc.text = clickedStoreData?.account
+                    ownername.text = clickedStoreData?.ownername
+                    //storestatus.text =
 
                     val tostore = findViewById<CardView>(R.id.card_view)
                     tostore.setOnClickListener {
-                        val intent3 = Intent(this@MainActivity, StoreActivity::class.java)
-                        startActivity(intent3)
+                        val intent = Intent(this@MainActivity, StoreActivity::class.java)
+                        intent.putExtra("name", "${clickedStoreData?.name}")
+                        intent.putExtra("account", "${clickedStoreData?.account}")
+                        intent.putExtra("bank", "${clickedStoreData?.bank}")
+                        intent.putExtra("ownername", "${clickedStoreData?.ownername}")
+                        startActivity(intent)
                     }
 
-                    val copy = findViewById<ImageButton>(R.id.btn_copy)
+                    val copy = findViewById<ImageButton>(R.id.btn_copy_store)
                     copy.setOnClickListener {
                         val clipboard =
                             getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -239,10 +263,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         googleMap!!.setOnMapClickListener(object : GoogleMap.OnMapClickListener {
             override fun onMapClick(latLng: LatLng) {
                 cardView.visibility = View.GONE
+                cardview_list.visibility = View.GONE
             }
         })
     }
 
+    private fun findStoreDataByName(name: String): StoreData? {
+        return list.find { it.name == name }
+    }
         // -- 내 위치를 가져오는 코드
         lateinit var fusedLocationClient: FusedLocationProviderClient
         lateinit var locationCallback: LocationCallback
@@ -270,6 +298,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
         }
+
 
     fun setLastLocation(location: Location) {
         val myLocation = LatLng(location.latitude, location.longitude)
