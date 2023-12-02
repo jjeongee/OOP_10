@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "project_number": "713879570618",
-    "project_id": "samdollar1280",
-    "storage_bucket": "https://samdollar1280-default-rtdb.firebaseio.com/"
+    "project_number": "683756484905",
+    "firebase_url": "https://recyclerviewkt-default-rtdb.firebaseio.com",
+    "project_id": "recyclerviewkt",
+    "storage_bucket": "recyclerviewkt.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:713879570618:android:214faf0ca848920374da83",
+        "mobilesdk_app_id": "1:683756484905:android:d57b9a7e783fcb35985f38",
         "android_client_info": {
           "package_name": "com.example.samdollarfront"
         }
@@ -15,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAWQgWsBX56ODUody1JL3P1A9fqXltiYjM"
+          "current_key": "AIzaSyAjmb0A271n7cMFDkzOy9bQv-Jt79Lg2yE"
         }
       ],
       "services": {

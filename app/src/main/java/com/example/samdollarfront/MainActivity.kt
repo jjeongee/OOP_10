@@ -13,7 +13,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 
-import android.widget.Toast
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
@@ -108,7 +107,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-      mMap = googleMap
+        mMap = googleMap
         val zoomLevel = 17.0f
         // Add a marker in Sydney and move the camera
         val boong = LatLng(37.602614, 126.869500)

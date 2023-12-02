@@ -30,7 +30,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCdDq1yU9MV05DaDEP2WhIwEwlnl0d9T2g" />
+            android:value="AIzaSyBLyhhX0YDZx-ENMa_Lpvh5g2MCprLotRU" />
 
 
         <activity
@@ -44,7 +44,7 @@
             android:exported="false" />
         <activity
             android:name=".OwnerActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".MineActivity"
             android:exported="false" />
