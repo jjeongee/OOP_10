@@ -26,6 +26,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -50,16 +51,16 @@ import com.google.firebase.database.ValueEventListener
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    val permissions = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
     val PERM_FLAG = 99
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var database: DatabaseReference
-    val store_namelist = ArrayList<String>()
-    val accountlist = ArrayList<String>()
-    val combinedList = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,20 +68,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val listView: ListView = findViewById(R.id.listview)
+        val recyclerView: RecyclerView = findViewById(R.id.lstUser)
 
         val list = ArrayList<StoreData>()
-        list.add(StoreData("화전역 앞 붕어빵", "3333-12-3456"))
-        list.add(StoreData("행신동 역할맥 앞 붕어빵", "3333-12-7890"))
-        list.add(StoreData("홍대입구 9번출구 쪽 계란빵", "1002-12-3456"))
-
-        val adapter = StoreAdapter(this, list)
-        listView.adapter = adapter
-
-        listView.setOnItemClickListener{ parent, view, position, id ->
-            val intent3 = Intent(this@MainActivity, StoreActivity::class.java)
-            startActivity(intent3)
+        list.apply {
+            add(StoreData("화전역 앞 붕어빵", "3333-12-3456"))
+            add(StoreData("행신동 역할맥 앞 붕어빵", "3333-12-7890"))
+            add(StoreData("홍대입구 9번출구 쪽 계란빵", "1002-12-3456"))
         }
+
+        val adapter = StoreAdapter(list, {data -> adapterOnClick(data)})
+        recyclerView.adapter = adapter
+
         database = FirebaseDatabase.getInstance().getReference().child("Store")
 
         /*database.addValueEventListener(object: ValueEventListener {
@@ -117,7 +116,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val buttontolist = findViewById<Button>(R.id.btn_showlist)
         buttontolist.setOnClickListener {
             val cardview_list = findViewById<CardView>(R.id.list_card_view)
-            cardview_list.visibility = View.VISIBLE
+            if (cardview_list.visibility == View.GONE) {
+                cardview_list.visibility = View.VISIBLE
+                buttontolist.setText("목록닫기")
+            }
+            else {
+                cardview_list.visibility = View.GONE
+                buttontolist.setText("목록열기")
+            }
         }
 
         if (isPermitted()) {
@@ -128,8 +134,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    fun isPermitted() : Boolean {
-        for(perm in permissions) {
+    private fun adapterOnClick(data: StoreData) {
+        val intent = Intent(this, StoreActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun isPermitted(): Boolean {
+        for (perm in permissions) {
             if (ContextCompat.checkSelfPermission(this, perm) != PERMISSION_GRANTED) {
                 return false
             }
@@ -167,7 +178,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         googleMap!!.setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
             override fun onMarkerClick(marker: Marker): Boolean {
-           
+
                 if (marker.title == "내 위치") {
                     cardView.visibility = View.GONE
                 } else {
@@ -191,11 +202,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     val copy = findViewById<ImageButton>(R.id.btn_copy)
                     copy.setOnClickListener {
-                        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clipboard =
+                            getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         val clip: ClipData = ClipData.newPlainText("계좌번호", owneracc.text.toString())
                         clipboard.setPrimaryClip(clip)
 
-                        Toast.makeText(this@MainActivity, "계좌번호가 클립보드에 복사되었습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@MainActivity,
+                            "계좌번호가 클립보드에 복사되었습니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
                     val zzim = findViewById<ImageButton>(R.id.zzimButton)
@@ -205,11 +221,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     zzim.setOnClickListener {
                         if (isZzimSelected) {
                             zzim.setImageResource(R.drawable.star)
-                            Toast.makeText(this@MainActivity, "찜 목록에서 제외되었습니다.", Toast.LENGTH_SHORT).show()
-                        }
-                        else {
+                            Toast.makeText(this@MainActivity, "찜 목록에서 제외되었습니다.", Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
                             zzim.setImageResource(R.drawable.zzim)
-                            Toast.makeText(this@MainActivity, "찜 목록에 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MainActivity, "찜 목록에 추가되었습니다.", Toast.LENGTH_SHORT)
+                                .show()
                         }
 
                         isZzimSelected = !isZzimSelected
@@ -224,34 +241,35 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 cardView.visibility = View.GONE
             }
         })
+    }
 
-    // -- 내 위치를 가져오는 코드
-    lateinit var fusedLocationClient:FusedLocationProviderClient
-    lateinit var locationCallback:LocationCallback
+        // -- 내 위치를 가져오는 코드
+        lateinit var fusedLocationClient: FusedLocationProviderClient
+        lateinit var locationCallback: LocationCallback
 
-    // 좌표계를 주기적으로 갱신해주는 리스너
-    @SuppressLint("MissingPermission")  // 문법 검사기
-    fun setupdateLocationListener() {
-        val locationRequest = LocationRequest.create()
-        locationRequest.run {
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            //interval = 10000
-            // gps와 네트워크를 다 사용해서 10초에 한번씩 좌표값을 가져옴
-        }
+        // 좌표계를 주기적으로 갱신해주는 리스너
+        @SuppressLint("MissingPermission") // 문법 검사기
+        fun setupdateLocationListener() {
+            val locationRequest = LocationRequest.create()
+            locationRequest.run {
+                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+                //interval = 10000
+                // gps와 네트워크를 다 사용해서 10초에 한번씩 좌표값을 가져옴
+            }
 
-        locationCallback = object : LocationCallback () {
-            override fun onLocationResult(locationResult: LocationResult?) {
-                locationResult?.let {
-                    for ((i, location) in it.locations.withIndex()) {  // 튜플로 사용
-                        Log.d("로케이션", "$i ${location.latitude}, ${location.longitude}")
-                        setLastLocation(location)
+            locationCallback = object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult?) {
+                    locationResult?.let {
+                        for ((i, location) in it.locations.withIndex()) {  // 튜플로 사용
+                            Log.d("로케이션", "$i ${location.latitude}, ${location.longitude}")
+                            setLastLocation(location)
+                        }
                     }
                 }
             }
-        }
 
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
-    }
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
+        }
 
     fun setLastLocation(location: Location) {
         val myLocation = LatLng(location.latitude, location.longitude)
@@ -269,28 +287,33 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.moveCamera(camera)
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode) {
-            PERM_FLAG -> {
-                var check = true
-                for (grant in grantResults) {
-                    if(grant != PERMISSION_GRANTED) {
-                        check = false
-                        break
+        override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+        ) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            when (requestCode) {
+                PERM_FLAG -> {
+                    var check = true
+                    for (grant in grantResults) {
+                        if (grant != PERMISSION_GRANTED) {
+                            check = false
+                            break
+                        }
                     }
-                }
-                if (check) {
-                    startProcess()
-                } else {
-                    Toast.makeText(this@MainActivity, "권한을 승인해야 앱을 사용할 수 있습니다.", Toast.LENGTH_LONG)
-                    finish()
+                    if (check) {
+                        startProcess()
+                    } else {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "권한을 승인해야 앱을 사용할 수 있습니다.",
+                            Toast.LENGTH_LONG
+                        )
+                        finish()
+                    }
                 }
             }
         }
     }
-}
+

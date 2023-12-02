@@ -132,7 +132,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="269dp"
+            android:layout_width="239dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -151,7 +151,8 @@
             android:id="@+id/btn_showlist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="목록열기"
+            android:textSize="10sp" />
 
     </LinearLayout>
 
@@ -194,10 +195,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="15dp" />
 
-                <ListView
-                    android:id="@+id/listview"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="656dp" />
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/lstUser"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_view" />
+
+                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
