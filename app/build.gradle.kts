@@ -62,6 +62,10 @@ dependencies {
     //firebase realtimedatabase 연결
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("com.google.firebase:firebase-analytics")
+
+    // recyclerView
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+
 }
 
 
