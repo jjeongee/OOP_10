@@ -271,22 +271,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun findStoreDataByName(name: String): StoreData? {
         return list.find { it.name == name }
     }
-        // -- 내 위치를 가져오는 코드
-        lateinit var fusedLocationClient: FusedLocationProviderClient
-        lateinit var locationCallback: LocationCallback
 
-        // 좌표계를 주기적으로 갱신해주는 리스너
-        @SuppressLint("MissingPermission") // 문법 검사기
-        fun setupdateLocationListener() {
-            val locationRequest = LocationRequest.create()
-            locationRequest.run {
-                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-                //interval = 10000
-                // gps와 네트워크를 다 사용해서 10초에 한번씩 좌표값을 가져옴
-            }
-
-
-    }
     // 내 위치를 가져오는 코드
 
     lateinit var fusedLocationClient:FusedLocationProviderClient
