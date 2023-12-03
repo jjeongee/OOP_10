@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
 import android.os.Looper
@@ -55,13 +56,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var database: DatabaseReference
     val list = ArrayList<StoreData>()
 
+    private lateinit var recyclerView: RecyclerView
+
+    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val recyclerView: RecyclerView = findViewById(R.id.lstUser)
+        recyclerView = findViewById(R.id.lstUser)
 
         list.apply {
             add(StoreData("화전역 앞 붕어빵", "3333-12-3456", "카카오뱅크", "민초붕" , 37.602614, 126.869500))
@@ -118,8 +122,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
+
+        // fusedLocationClient 초기화
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         if (isPermitted()) {
             startProcess()
+            setupdateLocationListener()
         } else {
             ActivityCompat.requestPermissions(this, permissions, PERM_FLAG)
         }
@@ -147,10 +156,25 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     fun startProcess() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-
+        Log.d("Location", "Start process")
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+
+        /*if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PERMISSION_GRANTED
+        ) {
+
+        } else {
+            ActivityCompat.requestPermissions(this, permissions, PERM_FLAG)
+            Log.d("else", "뭐야")
+        }*/
     }
 
     /**
@@ -173,25 +197,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             val latLng = LatLng(storeData.lat, storeData.lng)
             mMap.addMarker(MarkerOptions().position(latLng).title(storeData.name))
         }
-
-        /*fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            location?.let{
-                setLastLocation(location)
-
-                //거리계산
-                for (storeData in list) {
-                    val latLng = LatLng(storeData.lat, storeData.lng)
-                    val distance = location.distanceTo(Location("").apply {
-                        latitude = storeData.lat
-                        longitude = storeData.lng
-                    })
-
-                    val distanceText = "${"%.2f".format(distance/10000)}m 떨어짐"
-                    val viewHolder = recyclerView.findViewHolderForAdapterPosition(list.indexOf(storeData)) as StoreAdapter.ViewHolder?
-                    viewHolder?.updateDistance(distanceText)
-                }
-            }
-        }*/
 
         val cardView = findViewById<CardView>(R.id.card_view)
         val cardview_list = findViewById<CardView>(R.id.list_card_view)
@@ -293,6 +298,28 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         for ((i, location) in it.locations.withIndex()) {  // 튜플로 사용
                             Log.d("로케이션", "$i ${location.latitude}, ${location.longitude}")
                             setLastLocation(location)
+
+                            //거리계산
+                            for (storeData in list) {
+                                val latLng = LatLng(storeData.lat, storeData.lng)
+                                val distance = location.distanceTo(Location("").apply {
+                                    latitude = storeData.lat
+                                    longitude = storeData.lng
+                                })
+
+                                val distanceText = "${"%.2f".format(distance / 1000)}km"
+                                val recycler_view = findViewById<RecyclerView>(R.id.lstUser)
+                                val viewHolder =
+                                    recycler_view.findViewHolderForAdapterPosition(list.indexOf(storeData)) as StoreAdapter.ViewHolder?
+                                if (viewHolder != null) {
+                                    viewHolder.updateDistance(distanceText)
+                                }
+                                else {
+                                    Log.d("ViewHolder", "ViewHolder is null for storeData: $storeData")
+                                }
+                            }
+
+                            recyclerView.adapter?.notifyDataSetChanged()
                         }
                     }
                 }
