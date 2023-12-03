@@ -2,6 +2,7 @@ package com.example.samdollarfront
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,7 @@ class StoreAdapter(private val items: ArrayList<StoreData>, private val onClick:
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: StoreAdapter.ViewHolder, position: Int)  {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int)  {
 
         val item = items[position]
 
@@ -33,7 +34,7 @@ class StoreAdapter(private val items: ArrayList<StoreData>, private val onClick:
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflatedView = LayoutInflater.from(parent.context).inflate(R.layout.item_view, parent, false)
-        return StoreAdapter.ViewHolder(inflatedView)
+        return ViewHolder(inflatedView)
     }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -44,6 +45,11 @@ class StoreAdapter(private val items: ArrayList<StoreData>, private val onClick:
             txtname.text = item.name
             txtaccount.text = item.account
             view.setOnClickListener(listener)
+        }
+        fun updateDistance(distance: String) {
+            Log.d("UpdateDistance", "Distance Updated: $distance")
+            val txtDistance = view.findViewById<TextView>(R.id.txt_distance)
+            txtDistance.text = distance
         }
     }
 }
