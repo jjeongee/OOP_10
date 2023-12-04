@@ -47,5 +47,113 @@
             android:text="내 가게 등록"
             android:textSize="24sp" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="212dp"
+            android:text="이름"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/nameInput"
+            android:layout_width="78dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="200dp"
+            android:hint="입력"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/name"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/sale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="판매 품목"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/name"
+            app:layout_constraintTop_toBottomOf="@+id/name" />
+
+        <EditText
+            android:id="@+id/saleInput"
+            android:layout_width="112dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="40dp"
+            android:hint="입력"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/sale"
+            app:layout_constraintTop_toBottomOf="@+id/name" />
+
+        <TextView
+            android:id="@+id/account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="계좌"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/sale"
+            app:layout_constraintTop_toBottomOf="@+id/sale" />
+
+        <EditText
+            android:id="@+id/accountInput"
+            android:layout_width="213dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="40dp"
+            android:hint="입력"
+            android:textSize="20sp"
+            android:inputType="number"
+            app:layout_constraintStart_toEndOf="@+id/account"
+            app:layout_constraintTop_toBottomOf="@+id/sale" />
+
+        <TextView
+            android:id="@+id/bank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="은행"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/account"
+            app:layout_constraintTop_toBottomOf="@+id/account" />
+
+        <EditText
+            android:id="@+id/bankInput"
+            android:layout_width="164dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="44dp"
+            android:hint="입력"
+            android:inputType="number"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/bank"
+            app:layout_constraintTop_toBottomOf="@+id/account" />
+
+        <Button
+            android:id="@+id/enter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="158dp"
+            android:layout_marginTop="86dp"
+            android:text="등록"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bankInput" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
