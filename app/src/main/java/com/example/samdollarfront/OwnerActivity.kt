@@ -35,6 +35,8 @@ class OwnerActivity : AppCompatActivity() {
 
         //recyclerView와 xml의 RecyclerView 설정 연결
         recyclerView = findViewById(R.id.rv_deposit)
+        val statustext = findViewById<TextView>(R.id.txt_status)
+        val startButton = findViewById<Button>(R.id.btn_start)
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
 
@@ -46,6 +48,31 @@ class OwnerActivity : AppCompatActivity() {
         depositAdapter.notifyDataSetChanged()//데이터값이 바뀌면 알려주고 업데이트
 
         recyclerView.adapter = depositAdapter //recyclerView에 어댑터 할당
+
+        //영업 여부 알려주는 버튼에 기능 부여
+        startButton.setOnClickListener {
+            if ( startButton.text == "영업 시작") {
+                startButton.setText("영업 종료")
+                statustext.setText("영업 중")
+                statustext.setTextColor(Color.parseColor("#FF0000"))
+            }
+            else {
+                startButton.setText("영업 시작")
+                statustext.setText("영업 종료")
+                statustext.setTextColor(Color.parseColor("#000000"))
+            }
+        }
+        val buttontoMenu = findViewById<ImageButton>(R.id.btn_menu)
+        buttontoMenu.setOnClickListener {
+            val intent1 = Intent(this, MenuActivity::class.java)
+            startActivity(intent1)
+        }
+
+        val buttontoMine = findViewById<ImageButton>(R.id.btn_mine)
+        buttontoMine.setOnClickListener {
+            val intent2 = Intent(this, MineActivity::class.java)
+            startActivity(intent2)
+        }
 
 
     }

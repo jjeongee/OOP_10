@@ -142,5 +142,48 @@
         tools:listitem="@layout/deposit_list">
         </androidx.recyclerview.widget.RecyclerView>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp">
+
+        <Space
+            android:layout_width="101dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="영업 시작" />
+    </LinearLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="47dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="155dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="현 상태: " />
+
+        <TextView
+            android:id="@+id/txt_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="영업 종료" />
+    </LinearLayout>
+
+
 
 </LinearLayout>
