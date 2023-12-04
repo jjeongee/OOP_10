@@ -18,7 +18,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class OwnerActivity : AppCompatActivity() {
+class  OwnerActivity : AppCompatActivity() {
     //Deposit Activity에서 만든 RecyclerView 초기화 및 연결
     private lateinit var recyclerView: RecyclerView
     private lateinit var depositAdapter: DepositAdapter
