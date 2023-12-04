@@ -1,27 +1,37 @@
 {
   "project_info": {
-    "project_number": "683756484905",
-    "firebase_url": "https://recyclerviewkt-default-rtdb.firebaseio.com",
-    "project_id": "recyclerviewkt",
-    "storage_bucket": "recyclerviewkt.appspot.com"
+    "project_number": "713879570618",
+    "firebase_url": "https://samdollar1280-default-rtdb.firebaseio.com",
+    "project_id": "samdollar1280",
+    "storage_bucket": "samdollar1280.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:683756484905:android:d57b9a7e783fcb35985f38",
+        "mobilesdk_app_id": "1:713879570618:android:56a290ed12cbb55a74da83",
         "android_client_info": {
           "package_name": "com.example.samdollarfront"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "713879570618-pbj0rh6o9mmneb10o8feivjbvomcl0ga.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAjmb0A271n7cMFDkzOy9bQv-Jt79Lg2yE"
+          "current_key": "AIzaSyAWQgWsBX56ODUody1JL3P1A9fqXltiYjM"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713879570618-pbj0rh6o9mmneb10o8feivjbvomcl0ga.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
