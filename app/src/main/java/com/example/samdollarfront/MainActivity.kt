@@ -185,7 +185,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val locationRequest = LocationRequest.create()
         locationRequest.run {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            interval = 10000
+            //interval = 10000
             // gps와 네트워크를 다 사용해서 10초에 한번씩 좌표값을 가져옴
         }
 
