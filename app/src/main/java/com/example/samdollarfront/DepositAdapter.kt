@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class DepositAdapter(val depositList:ArrayList<Deposit>):RecyclerView.Adapter<DepositAdapter.DepositViewHolder>() {
     //ViewHolder 생성 함수,activity_owner 파일의 내용을 상속(?)
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DepositAdapter.DepositViewHolder {
-        val depositview = LayoutInflater.from(parent.context).inflate(R.layout.activity_owner,parent,false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DepositViewHolder {
+        val depositview = LayoutInflater.from(parent.context).inflate(R.layout.deposit_list,parent,false)
         return DepositViewHolder(depositview)
     }
 
@@ -17,7 +17,6 @@ class DepositAdapter(val depositList:ArrayList<Deposit>):RecyclerView.Adapter<De
         holder.username.text=depositList[position].username
         holder.bankname.text=depositList[position].bankname
         holder.inputmoney.text=depositList[position].inputmoney.toString()
-
     }
 
     override fun getItemCount(): Int {
@@ -25,9 +24,9 @@ class DepositAdapter(val depositList:ArrayList<Deposit>):RecyclerView.Adapter<De
     }
     //inner class로 TextView연결 :화면에 보여줌
     inner class DepositViewHolder(depositView: View):RecyclerView.ViewHolder(depositView){
-        val username = depositView.findViewById<TextView>(R.id.tv_name)
-        val bankname = depositView.findViewById<TextView>(R.id.tv_bankname)
-        val inputmoney = depositView.findViewById<TextView>(R.id.tv_inputmoney)
+        val username = depositView.findViewById<TextView>(R.id.tv_userName)
+        val bankname = depositView.findViewById<TextView>(R.id.tv_bankName)
+        val inputmoney = depositView.findViewById<TextView>(R.id.tv_inputMoney)
     }
 
 }
