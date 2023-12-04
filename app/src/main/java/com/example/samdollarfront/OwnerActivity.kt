@@ -62,18 +62,24 @@ class OwnerActivity : AppCompatActivity() {
                 statustext.setTextColor(Color.parseColor("#000000"))
             }
         }
+        //메뉴수정 페이지로 넘어감
         val buttontoMenu = findViewById<ImageButton>(R.id.btn_menu)
         buttontoMenu.setOnClickListener {
             val intent1 = Intent(this, MenuActivity::class.java)
             startActivity(intent1)
         }
-
+        //내정보 페이지로 넘어감
         val buttontoMine = findViewById<ImageButton>(R.id.btn_mine)
         buttontoMine.setOnClickListener {
             val intent2 = Intent(this, MineActivity::class.java)
             startActivity(intent2)
         }
-
+        //삼딸라 텍스트를 누르면 메인화면으로 돌아감
+        val backtoMain = findViewById<TextView>(R.id.appTitle)
+        backtoMain.setOnClickListener {
+            val intent3 = Intent(this,MainActivity::class.java)
+            startActivity(intent3)
+        }
 
     }
 
