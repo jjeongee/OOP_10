@@ -60,9 +60,14 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
     //firebase realtimedatabase 연결
+
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    // recyclerView
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+
 }
 
 
