@@ -8,6 +8,7 @@ data class StoreData(
     var bank: String,
     var ownername: String,
     var lat: Double,
-    var lng: Double
+    var lng: Double,
+    var distance: Float = 0F
 )
 

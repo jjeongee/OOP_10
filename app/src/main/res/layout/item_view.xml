@@ -37,9 +37,9 @@
 
                 <TextView
                     android:id="@+id/txt_distance"
-                    android:layout_width="69dp"
+                    android:layout_width="91dp"
                     android:layout_height="match_parent"
-                    android:text="TextView"
+                    android:text="---"
                     android:textSize="17sp" />
             </LinearLayout>
 

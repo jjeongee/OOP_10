@@ -38,8 +38,11 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Marker
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -55,6 +58,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var database: DatabaseReference
     val list = ArrayList<StoreData>()
+    val dist_list = ArrayList<StoreData>()
 
     private lateinit var recyclerView: RecyclerView
 
@@ -67,29 +71,39 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         recyclerView = findViewById(R.id.lstUser)
 
-        list.apply {
+        /*list.apply {
             add(StoreData("화전역 앞 붕어빵", "3333-12-3456", "카카오뱅크", "민초붕" , 37.602614, 126.869500))
             add(StoreData("행신동 역할맥 앞 붕어빵", "3333-12-7890", "카카오뱅크", "이희정", 37.615021, 126.834680))
             add(StoreData("홍대입구 9번출구 쪽 계란빵", "1002-12-3456", "우리은행" , "노기범", 37.555726, 126.923362))
-        }
+        }*/
 
         val adapter = StoreAdapter(list, {data -> adapterOnClick(data)})
-        recyclerView.adapter = adapter
 
         database = FirebaseDatabase.getInstance().getReference().child("Store")
 
-        /*database.addValueEventListener(object: ValueEventListener {
+        database.addValueEventListener(object: ValueEventListener {
             override fun onCancelled(dataSnapshot: DatabaseError) {
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                list.clear()
                 for (data in dataSnapshot.children) {
-                    val storeResult = data.getValue(Store::class.java)
-                    store_namelist.add(storeResult?.name.toString())
+                    val name = data.child("name").getValue(String::class.java)?:""
+                    val account = data.child("account").getValue(String::class.java)?:""
+                    val bank = data.child("bank").getValue(String::class.java)?:""
+                    val ownername = data.child("ownername").getValue(String::class.java)?:""
+                    val lat = data.child("lat").getValue(Double::class.java)?:0.0
+                    val lng = data.child("lag").getValue(Double::class.java)?:0.0
+
+                    val Store = StoreData(name, bank, account, ownername, lat, lng)
+                    list.add(Store)
                 }
-                list_adapter.notifyDataSetChanged()
+                adapter.notifyDataSetChanged()
             }
-        })*/
+        })
+
+        adapter.notifyDataSetChanged()
+        recyclerView.adapter = adapter
 
         val buttontoOwner = findViewById<ImageButton>(R.id.btn_owner)
         buttontoOwner.setOnClickListener {
@@ -160,21 +174,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-
-        /*if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PERMISSION_GRANTED
-        ) {
-
-        } else {
-            ActivityCompat.requestPermissions(this, permissions, PERM_FLAG)
-            Log.d("else", "뭐야")
-        }*/
     }
 
     /**
@@ -306,8 +305,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                                     latitude = storeData.lat
                                     longitude = storeData.lng
                                 })
-
+                                storeData.distance = distance
                                 val distanceText = "${"%.2f".format(distance / 1000)}km"
+                                val recycler_view = findViewById<RecyclerView>(R.id.lstUser)
+                                val viewHolder =
+                                    recycler_view.findViewHolderForAdapterPosition(list.indexOf(storeData)) as StoreAdapter.ViewHolder?
+                                viewHolder?.updateDistance(distanceText)
+                            }
+                                /*val distanceText = "${"%.2f".format(distance / 1000)}km"
                                 val recycler_view = findViewById<RecyclerView>(R.id.lstUser)
                                 val viewHolder =
                                     recycler_view.findViewHolderForAdapterPosition(list.indexOf(storeData)) as StoreAdapter.ViewHolder?
@@ -317,7 +322,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 else {
                                     Log.d("ViewHolder", "ViewHolder is null for storeData: $storeData")
                                 }
-                            }
+                            }*/
+                            list.sortBy {it.distance}
+
+                            dist_list.clear()
+                            dist_list.addAll(list)
 
                             recyclerView.adapter?.notifyDataSetChanged()
                         }
@@ -328,10 +337,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
         }
 
-
+    var lastLocationMarker: Marker?= null
     fun setLastLocation(location: Location) {
+        lastLocationMarker?.remove()
         val myLocation = LatLng(location.latitude, location.longitude)
-        val marker = MarkerOptions()
+        val mymarker = MarkerOptions()
             .position(myLocation)
             .title("내 위치")
         val cameraOption = CameraPosition.Builder()
@@ -340,8 +350,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             .build()
         val camera = CameraUpdateFactory.newCameraPosition(cameraOption)
 
-        //mMap.clear()
-        mMap.addMarker(marker)
+        lastLocationMarker = mMap.addMarker(mymarker)
         mMap.moveCamera(camera)
     }
 
