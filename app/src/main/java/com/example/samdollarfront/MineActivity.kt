@@ -5,12 +5,13 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.samdollarfront.databinding.ActivityMineBinding
 import com.google.firebase.database.*
 
 class User(val name: String = "", val sale: String = "", val account: String = "", val bank: String = "")
-
 class MineActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMineBinding
@@ -24,8 +25,12 @@ class MineActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         database = FirebaseDatabase.getInstance()
-        userRef = database.getReference("user")
-        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
+        userRef = database.getReference("Store")
+            sharedPreferences = getPreferences(Context.MODE_PRIVATE)
+
+        val backButton = findViewById<ImageButton>(R.id.btn_main2)
+
+
 
         val enter = findViewById<Button>(R.id.enter)
 
@@ -34,7 +39,6 @@ class MineActivity : AppCompatActivity() {
             val sale = binding.saleInput.text.toString()
             val account = binding.accountInput.text.toString()
             val bank = binding.bankInput.text.toString()
-
             // SharedPreferences에 account 값을 저장
             saveAccount(account)
 
@@ -43,10 +47,13 @@ class MineActivity : AppCompatActivity() {
             }
         }
 
-        val account = sharedPreferences.getString("account", "")
-        val intent = Intent(this, MenuActivity::class.java)
-        intent.putExtra("key", account)
-        startActivity(intent)
+        backButton.setOnClickListener {
+            val account = sharedPreferences.getString("account", "")
+            val intent = Intent(this,OwnerActivity::class.java)
+            intent.putExtra("key", account)
+            startActivity(intent)
+        }
+
 
         // 앱이 다시 실행될 때 저장된 account 값을 불러오고 해당 account에 대한 데이터를 Firebase에서 가져와 화면에 표시
         loadUserData()

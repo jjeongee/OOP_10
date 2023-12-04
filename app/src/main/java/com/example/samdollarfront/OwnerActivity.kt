@@ -1,18 +1,16 @@
 package com.example.samdollarfront
 
+import android.content.Context
 import android.content.Intent
-import android.database.DatabaseErrorHandler
+import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View.OnClickListener
 import android.widget.ImageButton
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -23,6 +21,8 @@ class OwnerActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var depositAdapter: DepositAdapter
 
+    private lateinit var sharedPreferences: SharedPreferences //
+
     //Firebase의 realtime database와 연결해주는 database 변수 생성
     val database : FirebaseDatabase = FirebaseDatabase.getInstance()
     //Deposit class의 객체를 ArrayList형태로 firebase에 저장, 불러오는 변수
@@ -32,6 +32,8 @@ class OwnerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner)
+
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 
         //recyclerView와 xml의 RecyclerView 설정 연결
         recyclerView = findViewById(R.id.rv_deposit)
@@ -62,10 +64,18 @@ class OwnerActivity : AppCompatActivity() {
                 statustext.setTextColor(Color.parseColor("#000000"))
             }
         }
+
+        val key = (intent?.getStringExtra("key") as? String) ?: ""
+        saveKey(key)        //
+
+
+
+
         //메뉴수정 페이지로 넘어감
         val buttontoMenu = findViewById<ImageButton>(R.id.btn_menu)
         buttontoMenu.setOnClickListener {
             val intent1 = Intent(this, MenuActivity::class.java)
+            intent1.putExtra("key", key)          //
             startActivity(intent1)
         }
         //내정보 페이지로 넘어감
@@ -106,6 +116,13 @@ class OwnerActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
             }
         })
+    }
+
+    private fun saveKey(Key: String) {     //
+        // SharedPreferences에 account 값을 저장
+        val editor = sharedPreferences.edit()
+        editor.putString("Key", Key)
+        editor.apply()
     }
 
 }
