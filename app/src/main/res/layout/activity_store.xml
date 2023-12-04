@@ -64,10 +64,19 @@
 
         <TextView
             android:id="@+id/store_txt_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Storename"
             android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/btn_before_zzim"
+            android:layout_width="41dp"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/white"
+            android:scaleType="centerCrop"
+            android:src="@drawable/star"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     </LinearLayout>
 
