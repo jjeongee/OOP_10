@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 
@@ -30,6 +32,7 @@ class StoreAdapter(private val items: ArrayList<StoreData>, private val onClick:
             bind(listener, item)
             itemView.tag = item
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -45,6 +48,8 @@ class StoreAdapter(private val items: ArrayList<StoreData>, private val onClick:
             txtname.text = item.name
             txtaccount.text = item.account
             view.setOnClickListener(listener)
+
+
         }
         fun updateDistance(distance: String) {
             Log.d("UpdateDistance", "Distance Updated: $distance")

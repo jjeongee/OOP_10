@@ -13,6 +13,23 @@ class StoreActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store)
+        val zzimbtn = findViewById<ImageButton>(R.id.zzimButton)
+
+        zzimbtn.setOnClickListener {
+            var isZzimSelected = false
+
+            if (isZzimSelected) {
+                zzimbtn.setImageResource(R.drawable.star)
+                Toast.makeText(this@StoreActivity, "찜 목록에서 제외되었습니다.", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                zzimbtn.setImageResource(R.drawable.zzim)
+                Toast.makeText(this@StoreActivity, "찜 목록에 추가되었습니다.", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            isZzimSelected =!isZzimSelected
+
+        }
 
         val mainbutton = findViewById<ImageButton>(R.id.btn_main2)
 
