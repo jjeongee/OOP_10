@@ -10,6 +10,14 @@ import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+
 
 class StoreActivity : AppCompatActivity() {
     private var isZzimSelected = false
@@ -17,6 +25,41 @@ class StoreActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store)
         val zzimbtn = findViewById<ImageButton>(R.id.zzimButton)
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var database: DatabaseReference
+    val list = ArrayList<DataSnapshot>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_store)
+
+        recyclerView = findViewById(R.id.Menu_recy)
+
+        val adapter = StoreMenuAdapter(list)
+
+        database = FirebaseDatabase.getInstance().getReference().child("Store")
+
+        database.addValueEventListener(object: ValueEventListener {
+            override fun onCancelled(dataSnapshot: DatabaseError) {
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                list.clear()
+
+                for (storeSnapshot in dataSnapshot.children) {
+                    val menuSnapshot = storeSnapshot.child("menu")
+
+                    for (menu in menuSnapshot.children) {
+                        list.add(menu)
+                    }
+                }
+                adapter.notifyDataSetChanged()
+            }
+        })
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
+
         val mainbutton = findViewById<ImageButton>(R.id.btn_main2)
 
         mainbutton.setOnClickListener {

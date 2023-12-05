@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     val bank = data.child("bank").getValue(String::class.java)?:""
                     val ownername = data.child("ownername").getValue(String::class.java)?:""
                     val lat = data.child("lat").getValue(Double::class.java)?:0.0
-                    val lng = data.child("lag").getValue(Double::class.java)?:0.0
+                    val lng = data.child("lng").getValue(Double::class.java)?:0.0
 
                     val Store = StoreData(name, bank, account, ownername, lat, lng)
                     list.add(Store)
@@ -271,8 +271,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val locationRequest = LocationRequest.create()
         locationRequest.run {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            //interval = 10000
-            // gps와 네트워크를 다 사용해서 10초에 한번씩 좌표값을 가져옴
         }
 
             locationCallback = object : LocationCallback() {
@@ -284,17 +282,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                             //거리계산
                             for (storeData in list) {
-                                val latLng = LatLng(storeData.lat, storeData.lng)
-                                val distance = location.distanceTo(Location("").apply {
+                                val distance = location.distanceTo(Location("provider").apply {
                                     latitude = storeData.lat
                                     longitude = storeData.lng
                                 })
-                                storeData.distance = distance
+
                                 val distanceText = "${"%.2f".format(distance / 1000)}km"
                                 val recycler_view = findViewById<RecyclerView>(R.id.lstUser)
                                 val viewHolder =
                                     recycler_view.findViewHolderForAdapterPosition(list.indexOf(storeData)) as StoreAdapter.ViewHolder?
                                 viewHolder?.updateDistance(distanceText)
+
+                                storeData.distance = distance.toDouble() / 1000
+                                Log.d("${storeData.name}", "${storeData.lat}, ${storeData.lng}")
                             }
                                 /*val distanceText = "${"%.2f".format(distance / 1000)}km"
                                 val recycler_view = findViewById<RecyclerView>(R.id.lstUser)

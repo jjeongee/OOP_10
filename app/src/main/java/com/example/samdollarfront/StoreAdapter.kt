@@ -46,8 +46,11 @@ class StoreAdapter(val items: ArrayList<StoreData>, val onClick: (StoreData) -> 
         fun bind(listener: View.OnClickListener, item: StoreData) {
             val txtname = view.findViewById<TextView>(R.id.txt_name)
             val txtaccount = view.findViewById<TextView>(R.id.txt_account)
+            val txtDistance = view.findViewById<TextView>(R.id.txt_distance)
+
             txtname.text = item.name
             txtaccount.text = item.account
+            txtDistance.text = "${"%.2f".format(item.distance)}km"
             view.setOnClickListener(listener)
         }
         fun updateDistance(distance: String) {

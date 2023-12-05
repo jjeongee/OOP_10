@@ -9,6 +9,6 @@ data class StoreData(
     val ownername: String,
     var lat: Double,
     var lng: Double,
-    var distance: Float = 0F
+    var distance: Double = 0.0
 )
 
