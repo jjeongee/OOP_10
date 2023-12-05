@@ -48,4 +48,14 @@
             android:textSize="24sp" />
 
     </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_zzimrecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        tools:listitem="@layout/zzim_list">
+
+    </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

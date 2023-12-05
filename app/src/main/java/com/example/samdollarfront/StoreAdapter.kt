@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 
 
-class StoreAdapter(private val items: ArrayList<StoreData>, private val onClick: (StoreData) -> Unit) : RecyclerView.Adapter<StoreAdapter.ViewHolder>() {
+class StoreAdapter(val items: ArrayList<StoreData>, val onClick: (StoreData) -> Unit) : RecyclerView.Adapter<StoreAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = items.size
 
@@ -30,12 +32,14 @@ class StoreAdapter(private val items: ArrayList<StoreData>, private val onClick:
             bind(listener, item)
             itemView.tag = item
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflatedView = LayoutInflater.from(parent.context).inflate(R.layout.item_view, parent, false)
         return ViewHolder(inflatedView)
     }
+
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v

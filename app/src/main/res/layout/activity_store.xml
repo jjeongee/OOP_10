@@ -70,7 +70,7 @@
             android:textSize="20sp" />
 
         <ImageButton
-            android:id="@+id/btn_before_zzim"
+            android:id="@+id/zzimButton"
             android:layout_width="41dp"
             android:layout_height="match_parent"
             android:backgroundTint="@color/white"

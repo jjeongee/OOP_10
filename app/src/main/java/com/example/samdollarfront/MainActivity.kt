@@ -150,14 +150,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun adapterOnClick(data: StoreData) {
-        val intent = Intent(this, StoreActivity::class.java)
-        intent.putExtra("name", "${data.name}")
-        intent.putExtra("account", "${data.account}")
-        intent.putExtra("bank", "${data.bank}")
-        intent.putExtra("ownername", "${data.ownername}")
-
-        startActivity(intent)
+        val intentmain = Intent(this@MainActivity, StoreActivity::class.java)
+        intentmain.putExtra("store_info_name", "${data.name}")
+        intentmain.putExtra("store_info_account", "${data.account}")
+        intentmain.putExtra("store_info_bank", "${data.bank}")
+        intentmain.putExtra("store_info_ownername", "${data.ownername}")
+        startActivity(intentmain)
+        Log.w("어댑터온클릭함수","${data.name}")
     }
+
 
     fun isPermitted(): Boolean {
         for (perm in permissions) {
@@ -218,15 +219,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     ownername.text = clickedStoreData?.ownername
                     //storestatus.text =
 
-                    val tostore = findViewById<CardView>(R.id.card_view)
-                    tostore.setOnClickListener {
-                        val intent = Intent(this@MainActivity, StoreActivity::class.java)
-                        intent.putExtra("name", "${clickedStoreData?.name}")
-                        intent.putExtra("account", "${clickedStoreData?.account}")
-                        intent.putExtra("bank", "${clickedStoreData?.bank}")
-                        intent.putExtra("ownername", "${clickedStoreData?.ownername}")
-                        startActivity(intent)
-                    }
+//                    val tostore = findViewById<CardView>(R.id.card_view)
+//                    tostore.setOnClickListener {
+//                        val intent = Intent(this@MainActivity, StoreActivity::class.java)
+//                        intent.putExtra("name", "${clickedStoreData?.name}")
+//                        intent.putExtra("account", "${clickedStoreData?.account}")
+//                        intent.putExtra("bank", "${clickedStoreData?.bank}")
+//                        intent.putExtra("ownername", "${clickedStoreData?.ownername}")
+//                        startActivity(intent)
+//
+//                    }
+//                    Log.w("메인출발정보","${clickedStoreData?.name}")
 
                     val copy = findViewById<ImageButton>(R.id.btn_copy_store)
                     copy.setOnClickListener {
@@ -241,25 +244,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-
-                    val zzim = findViewById<ImageButton>(R.id.zzimButton)
-                    zzim.setImageResource(R.drawable.star)
-                    var isZzimSelected = false
-
-                    zzim.setOnClickListener {
-                        if (isZzimSelected) {
-                            zzim.setImageResource(R.drawable.star)
-                            Toast.makeText(this@MainActivity, "찜 목록에서 제외되었습니다.", Toast.LENGTH_SHORT)
-                                .show()
-                        } else {
-                            zzim.setImageResource(R.drawable.zzim)
-                            Toast.makeText(this@MainActivity, "찜 목록에 추가되었습니다.", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-
-                        isZzimSelected = !isZzimSelected
-                    }
-
                 }
                 return false
             }
