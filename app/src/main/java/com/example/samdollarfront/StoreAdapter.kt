@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 
 
-class StoreAdapter(private val items: ArrayList<StoreData>, private val onClick: (StoreData) -> Unit) : RecyclerView.Adapter<StoreAdapter.ViewHolder>() {
+class StoreAdapter(val items: ArrayList<StoreData>, val onClick: (StoreData) -> Unit) : RecyclerView.Adapter<StoreAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = items.size
 
@@ -40,6 +40,7 @@ class StoreAdapter(private val items: ArrayList<StoreData>, private val onClick:
         return ViewHolder(inflatedView)
     }
 
+
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
         fun bind(listener: View.OnClickListener, item: StoreData) {
@@ -48,8 +49,6 @@ class StoreAdapter(private val items: ArrayList<StoreData>, private val onClick:
             txtname.text = item.name
             txtaccount.text = item.account
             view.setOnClickListener(listener)
-
-
         }
         fun updateDistance(distance: String) {
             Log.d("UpdateDistance", "Distance Updated: $distance")

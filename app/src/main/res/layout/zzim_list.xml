@@ -12,7 +12,7 @@
         tools:ignore="MissingConstraints">
 
         <TextView
-            android:id="@+id/store_txt_name"
+            android:id="@+id/store_zzim_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -20,7 +20,7 @@
             android:text="찜한가게이름"
             android:textStyle="bold"/>
         <TextView
-            android:id="@+id/store_txt_bank"
+            android:id="@+id/store_zzim_bank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -28,14 +28,14 @@
             tools:ignore="InvalidId"
             android:text="카카오뱅크"/>
         <TextView
-            android:id="@+id/store_txt_account"
+            android:id="@+id/store_zzim_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_margin="5dp"
             android:text="1234-56-7890" />
         <TextView
-            android:id="@+id/store_txt_ownername"
+            android:id="@+id/store_zzim_ownername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"

@@ -1,5 +1,6 @@
 package com.example.samdollarfront
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,18 +21,28 @@ class ZzimAdapter(private val zzimList:ArrayList<Zzim>):RecyclerView.Adapter<Zzi
     }
 
     override fun onBindViewHolder(holder: ZzimViewHolder, position: Int) {
-        holder.zzimstore.text = zzimList[position].zzimstore
-        holder.zzimbank.text = zzimList[position].zzimbank
-        holder.zzimaccount.text = zzimList[position].zzimaccount
-        holder.zzimowner.text = zzimList[position].zzimowner
+//        holder.zzimstore.text = zzimList[position].zzimstore
+//        holder.zzimbank.text = zzimList[position].zzimbank
+//        holder.zzimaccount.text = zzimList[position].zzimaccount
+//        holder.zzimowner.text = zzimList[position].zzimowner
+        val zzimlist = zzimList[position]
+        holder.bind(zzimlist)
 
 
     }
 
     inner class ZzimViewHolder(zzimView: View):RecyclerView.ViewHolder(zzimView) {
-        val zzimstore = zzimView.findViewById<TextView>(R.id.store_txt_name)
-        val zzimbank = zzimView.findViewById<TextView>(R.id.store_txt_bank)
-        val zzimaccount = zzimView.findViewById<TextView>(R.id.store_txt_account)
-        val zzimowner = zzimView.findViewById<TextView>(R.id.store_txt_ownername)
+        val zzimstore = zzimView.findViewById<TextView>(R.id.store_zzim_name)
+        val zzimbank = zzimView.findViewById<TextView>(R.id.store_zzim_bank)
+        val zzimaccount = zzimView.findViewById<TextView>(R.id.store_zzim_account)
+        val zzimowner = zzimView.findViewById<TextView>(R.id.store_zzim_ownername)
+
+        //ZzimVeiwHolder는 xml의 textView를 가리키고 있기 때문에 중간 매개체 bind함수 필요
+        fun bind(zzim:Zzim){
+            zzimstore.text = zzim.zzimclassstore
+            zzimbank.text = zzim.zzimclassbank
+            zzimaccount.text = zzim.zzimclassaccount
+            zzimowner.text = zzim.zzimclassowner
+        }
     }
 }
