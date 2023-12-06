@@ -1,3 +1,3 @@
 package com.example.samdollarfront
 
-data class Zzim (val zzimclassstore:String, val zzimclassbank:String, val zzimclassaccount:String, val zzimclassowner:String)
+data class Zzim (var zzimclassstore:String, var zzimclassbank:String, var zzimclassaccount:String, var zzimclassowner:String)
