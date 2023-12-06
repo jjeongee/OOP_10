@@ -21,16 +21,11 @@ import com.google.firebase.database.ValueEventListener
 
 class StoreActivity : AppCompatActivity() {
     private var isZzimSelected = false
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_store)
-        val zzimbtn = findViewById<ImageButton>(R.id.zzimButton)
-
     private lateinit var recyclerView: RecyclerView
     private lateinit var database: DatabaseReference
     val list = ArrayList<DataSnapshot>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        val zzimbtn = findViewById<ImageButton>(R.id.zzimButton)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store)
 
