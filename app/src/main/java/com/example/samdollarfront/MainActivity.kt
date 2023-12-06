@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var recyclerView: RecyclerView
 
     //nullpoint 오류발생
-    val receiveMineData = intent?.getIntExtra("tag", 0)
+    var receiveMineData = 0
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }*/
 
         val adapter = StoreAdapter(list, { data -> adapterOnClick(data) })
-
+        receiveMineData = intent.getIntExtra("tag", 0)
         database = FirebaseDatabase.getInstance().getReference().child("Store")
 
         database.addValueEventListener(object : ValueEventListener {
@@ -147,7 +147,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             ActivityCompat.requestPermissions(this, permissions, PERM_FLAG)
         }
 
-
+        if (receiveMineData == 1) {
+            setupdateLocationListener()
+        }
 
 
     }
@@ -276,16 +278,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         locationRequest.run {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
+        Log.d("receiveMineData", " ${receiveMineData}")
 
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult?.let {
                     for ((i, location) in it.locations.withIndex()) {  // 튜플로 사용
                         Log.d("로케이션", "$i ${location.latitude}, ${location.longitude}")
-                        setLastLocation(location)
                         if (receiveMineData == 1) {
+                            Log.d("setupdateLocationListener", "plz")
                             sendtoMineListener(location)
                         }
+                        setLastLocation(location)
+
                         //거리계산
                         for (storeData in list) {
                             val distance = location.distanceTo(Location("provider").apply {
@@ -384,10 +389,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
     fun sendtoMineListener(location: Location) {
-        val intent = Intent(this, MineActivity::class.java)
-        intent.putExtra("lat", "${location.latitude}")
-        intent.putExtra("lng", "${location.longitude}")
 
+        val intent = Intent(this, MineActivity::class.java)
+        intent.putExtra("lat", location.latitude)
+        intent.putExtra("lng", location.longitude)
+        Log.d("sendtoMineListener", "${location.latitude}, ${location.longitude}")
         startActivity(intent)
     }
 

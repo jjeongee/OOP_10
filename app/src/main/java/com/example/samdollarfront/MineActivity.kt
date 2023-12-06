@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -12,13 +13,14 @@ import com.example.samdollarfront.databinding.ActivityMineBinding
 import com.google.firebase.database.*
 
 class User(val storeName: String = "",val name: String = "", val sale: String = "",
-           val account: String = "", val bank: String = "", val lpt: Double = 0.0, val lng: Double = 0.0)
+           val account: String = "", val bank: String = "", val lat: Double = 0.0 , val lng: Double = 0.0)
 class MineActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMineBinding
     private lateinit var database: FirebaseDatabase
     private lateinit var userRef: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +44,8 @@ class MineActivity : AppCompatActivity() {
             val sale = binding.saleInput.text.toString()
             val account = binding.accountInput.text.toString()
             val bank = binding.bankInput.text.toString()
-            val lat = 0.0
-            val lng = 0.0
+            val lat =  intent.getDoubleExtra("lat", 0.0)
+            val lng = intent.getDoubleExtra("lng", 0.0)
             // SharedPreferences에 account 값을 저장
             saveAccount(account)
 
@@ -63,8 +65,8 @@ class MineActivity : AppCompatActivity() {
         }
 
         locationButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("tag",1)
-            val intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
         }
 
