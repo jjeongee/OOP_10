@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var recyclerView: RecyclerView
 
-    val receiveMineData = intent.getIntExtra("tag", 0)
+    val receiveMineData = intent?.getIntExtra("tag", 0)
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,7 +136,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-
         // fusedLocationClient 초기화
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -146,9 +145,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         } else {
             ActivityCompat.requestPermissions(this, permissions, PERM_FLAG)
         }
-
-
-
 
     }
 

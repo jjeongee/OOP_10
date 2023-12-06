@@ -1,5 +1,6 @@
 package com.example.samdollarfront
 
+import android.app.Instrumentation.ActivityResult
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -10,6 +11,7 @@ import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -24,6 +26,7 @@ class StoreActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var database: DatabaseReference
+
     val list = ArrayList<DataSnapshot>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,12 +99,17 @@ class StoreActivity : AppCompatActivity() {
                 zzimbtn.setImageResource(R.drawable.zzim)
                 //storeActivity에서 별을 누르면 해당 가게 정보가 찜 목록에 바로 출력
                 //나중에 어댑터에 저장해두는걸로 바꿔야함
-                val storeinfointent = Intent(this@StoreActivity,ZzimActivity::class.java)
-                storeinfointent.putExtra("store_info_name","$name")
-                storeinfointent.putExtra("store_info_account","$account")
-                storeinfointent.putExtra("store_info_bank","$bank")
-                storeinfointent.putExtra("store_info_ownername","$ownername")
-                startActivity(storeinfointent)
+                val storeinfointent = Intent(this@StoreActivity,ZzimActivity::class.java).apply {
+                    putExtra("store_info_name","$name")
+                    putExtra("store_info_account","$account")
+                    putExtra("store_info_bank","$bank")
+                    putExtra("store_info_ownername","$ownername")
+                }
+                setResult(RESULT_OK,storeinfointent)
+//                storeinfointent.putExtra("store_info_name","$name")
+//                storeinfointent.putExtra("store_info_account","$account")
+//                storeinfointent.putExtra("store_info_bank","$bank")
+//                storeinfointent.putExtra("store_info_ownername","$ownername")
                 Toast.makeText(this@StoreActivity, "찜 목록에 추가되었습니다.", Toast.LENGTH_SHORT)
                     .show()
             }
