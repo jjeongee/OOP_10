@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.samdollarfront.databinding.ActivityMineBinding
 import com.google.firebase.database.*
 
-class User(val name: String = "", val sale: String = "", val account: String = "", val bank: String = "")
+class User(val storeName: String = "",val name: String = "", val sale: String = "", val account: String = "", val bank: String = "")
 class MineActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMineBinding
@@ -35,6 +35,7 @@ class MineActivity : AppCompatActivity() {
         val enter = findViewById<Button>(R.id.enter)
 
         enter.setOnClickListener {
+            val storeName = binding.storeNameInput.text.toString()
             val name = binding.nameInput.text.toString()
             val sale = binding.saleInput.text.toString()
             val account = binding.accountInput.text.toString()
@@ -42,8 +43,8 @@ class MineActivity : AppCompatActivity() {
             // SharedPreferences에 account 값을 저장
             saveAccount(account)
 
-            if (name.isNotEmpty() && sale.isNotEmpty() && account.isNotEmpty() && bank.isNotEmpty()) {
-                saveUser(name, sale, account, bank)
+            if (storeName.isNotEmpty() && name.isNotEmpty() && sale.isNotEmpty() && account.isNotEmpty() && bank.isNotEmpty()) {
+                saveUser(storeName,name, sale, account, bank)
             }
         }
 
@@ -59,8 +60,8 @@ class MineActivity : AppCompatActivity() {
         loadUserData()
     }
 
-    private fun saveUser(name: String, sale: String, account: String, bank: String) {
-        val user = User(name, sale, account, bank)
+    private fun saveUser(storeName: String,name: String, sale: String, account: String, bank: String) {
+        val user = User(storeName, name, sale, account, bank)
 
         // Firebase에 사용자 정보 저장
         val newUserRef = userRef.child(account) // account를 key로 사용
@@ -85,6 +86,7 @@ class MineActivity : AppCompatActivity() {
                     val user = snapshot.getValue(User::class.java)
                     if (user != null) {
                         // 사용자 정보를 화면에 표시하는 로직 추가
+                        binding.storeNameInput.setText(user.storeName)
                         binding.nameInput.setText(user.name)
                         binding.saleInput.setText(user.sale)
                         binding.accountInput.setText(user.account)
@@ -98,6 +100,7 @@ class MineActivity : AppCompatActivity() {
             })
         }
     }
+
 
 
 }
