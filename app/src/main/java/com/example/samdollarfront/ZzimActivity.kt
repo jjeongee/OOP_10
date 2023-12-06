@@ -17,7 +17,7 @@ class ZzimActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var zzimAdapter: ZzimAdapter
 
-    val database : FirebaseDatabase = FirebaseDatabase.getInstance()
+    val zzimRef = FirebaseDatabase.getInstance().getReference("Zzim")
     var zzimResult = ArrayList<Zzim>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,9 +37,8 @@ class ZzimActivity : AppCompatActivity() {
 
         val zzimclass = Zzim(storename,storeaccount,storebank,storeowner)
         zzimResult.add(zzimclass)
-
+        zzimRef.child(storename).setValue(zzimclass)
         recyclerView.adapter = zzimAdapter //recyclerView에 어댑터 할당
-        Log.w("찜목록추가완료",zzimResult[0].zzimclassstore)
 
 
         //main화면으로 되돌아오는 버튼
