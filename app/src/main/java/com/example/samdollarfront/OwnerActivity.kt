@@ -66,6 +66,7 @@ class  OwnerActivity : AppCompatActivity() {
         }
 
         val key = (intent?.getStringExtra("key") as? String) ?: ""
+        if (key == "")
         saveKey(key)        //
 
 
@@ -123,6 +124,11 @@ class  OwnerActivity : AppCompatActivity() {
         val editor = sharedPreferences.edit()
         editor.putString("Key", Key)
         editor.apply()
+    }
+
+    private fun loadKey(): String? {
+        // SharedPreferences에서 key 값을 불러오기
+        return sharedPreferences.getString("key", null)
     }
 
 }
