@@ -77,25 +77,25 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             add(StoreData("홍대입구 9번출구 쪽 계란빵", "1002-12-3456", "우리은행" , "노기범", 37.555726, 126.923362))
         }*/
 
-        val adapter = StoreAdapter(list, {data -> adapterOnClick(data)})
+        val adapter = StoreAdapter(list, { data -> adapterOnClick(data) })
 
         database = FirebaseDatabase.getInstance().getReference().child("Store")
 
-        database.addValueEventListener(object: ValueEventListener {
+        database.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(dataSnapshot: DatabaseError) {
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 list.clear()
                 for (data in dataSnapshot.children) {
-                    val name = data.child("name").getValue(String::class.java)?:""
-                    val account = data.child("account").getValue(String::class.java)?:""
-                    val bank = data.child("bank").getValue(String::class.java)?:""
-                    val ownername = data.child("ownername").getValue(String::class.java)?:""
-                    val lat = data.child("lat").getValue(Double::class.java)?:0.0
-                    val lng = data.child("lng").getValue(Double::class.java)?:0.0
+                    val storename = data.child("storeName").getValue(String::class.java) ?: ""
+                    val account = data.child("account").getValue(String::class.java) ?: ""
+                    val bank = data.child("bank").getValue(String::class.java) ?: ""
+                    val name = data.child("name").getValue(String::class.java) ?: ""
+                    val lat = data.child("lat").getValue(Double::class.java) ?: 0.0
+                    val lng = data.child("lng").getValue(Double::class.java) ?: 0.0
 
-                    val Store = StoreData(name, bank, account, ownername, lat, lng)
+                    val Store = StoreData(storename, bank, account, name, lat, lng)
                     list.add(Store)
                 }
                 adapter.notifyDataSetChanged()
@@ -129,8 +129,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             if (cardview_list.visibility == View.GONE) {
                 cardview_list.visibility = View.VISIBLE
                 buttontolist.setText("목록닫기")
-            }
-            else {
+            } else {
                 cardview_list.visibility = View.GONE
                 buttontolist.setText("목록열기")
             }
@@ -147,6 +146,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             ActivityCompat.requestPermissions(this, permissions, PERM_FLAG)
         }
 
+        val receiveMineData = intent.getIntExtra("tag", 0)
+
+        if (receiveMineData == 1) {
+            sendtoMineListener()
+        }
     }
 
     private fun adapterOnClick(data: StoreData) {
@@ -156,7 +160,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         intentmain.putExtra("store_info_bank", "${data.bank}")
         intentmain.putExtra("store_info_ownername", "${data.ownername}")
         startActivity(intentmain)
-        Log.w("어댑터온클릭함수","${data.name}")
+        Log.w("어댑터온클릭함수", "${data.name}")
     }
 
 
@@ -168,6 +172,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         return true
     }
+
 
     fun startProcess() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -262,8 +267,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // 내 위치를 가져오는 코드
 
-    lateinit var fusedLocationClient:FusedLocationProviderClient
-    lateinit var locationCallback:LocationCallback
+    lateinit var fusedLocationClient: FusedLocationProviderClient
+    lateinit var locationCallback: LocationCallback
 
     // 좌표계를 주기적으로 갱신해주는 리스너
     @SuppressLint("MissingPermission")  // 문법 검사기
@@ -273,30 +278,34 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
-            locationCallback = object : LocationCallback() {
-                override fun onLocationResult(locationResult: LocationResult?) {
-                    locationResult?.let {
-                        for ((i, location) in it.locations.withIndex()) {  // 튜플로 사용
-                            Log.d("로케이션", "$i ${location.latitude}, ${location.longitude}")
-                            setLastLocation(location)
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult?.let {
+                    for ((i, location) in it.locations.withIndex()) {  // 튜플로 사용
+                        Log.d("로케이션", "$i ${location.latitude}, ${location.longitude}")
+                        setLastLocation(location)
 
-                            //거리계산
-                            for (storeData in list) {
-                                val distance = location.distanceTo(Location("provider").apply {
-                                    latitude = storeData.lat
-                                    longitude = storeData.lng
-                                })
+                        //거리계산
+                        for (storeData in list) {
+                            val distance = location.distanceTo(Location("provider").apply {
+                                latitude = storeData.lat
+                                longitude = storeData.lng
+                            })
 
-                                val distanceText = "${"%.2f".format(distance / 1000)}km"
-                                val recycler_view = findViewById<RecyclerView>(R.id.lstUser)
-                                val viewHolder =
-                                    recycler_view.findViewHolderForAdapterPosition(list.indexOf(storeData)) as StoreAdapter.ViewHolder?
-                                viewHolder?.updateDistance(distanceText)
+                            val distanceText = "${"%.2f".format(distance / 1000)}km"
+                            val recycler_view = findViewById<RecyclerView>(R.id.lstUser)
+                            val viewHolder =
+                                recycler_view.findViewHolderForAdapterPosition(
+                                    list.indexOf(
+                                        storeData
+                                    )
+                                ) as StoreAdapter.ViewHolder?
+                            viewHolder?.updateDistance(distanceText)
 
-                                storeData.distance = distance.toDouble() / 1000
-                                Log.d("${storeData.name}", "${storeData.lat}, ${storeData.lng}")
-                            }
-                                /*val distanceText = "${"%.2f".format(distance / 1000)}km"
+                            storeData.distance = distance.toDouble() / 1000
+                            Log.d("${storeData.name}", "${storeData.lat}, ${storeData.lng}")
+                        }
+                        /*val distanceText = "${"%.2f".format(distance / 1000)}km"
                                 val recycler_view = findViewById<RecyclerView>(R.id.lstUser)
                                 val viewHolder =
                                     recycler_view.findViewHolderForAdapterPosition(list.indexOf(storeData)) as StoreAdapter.ViewHolder?
@@ -307,21 +316,25 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                                     Log.d("ViewHolder", "ViewHolder is null for storeData: $storeData")
                                 }
                             }*/
-                            list.sortBy {it.distance}
+                        list.sortBy { it.distance }
 
-                            dist_list.clear()
-                            dist_list.addAll(list)
+                        dist_list.clear()
+                        dist_list.addAll(list)
 
-                            recyclerView.adapter?.notifyDataSetChanged()
-                        }
+                        recyclerView.adapter?.notifyDataSetChanged()
                     }
                 }
             }
-
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
         }
 
-    var lastLocationMarker: Marker?= null
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.myLooper()
+        )
+    }
+
+    var lastLocationMarker: Marker? = null
     fun setLastLocation(location: Location) {
         lastLocationMarker?.remove()
         val myLocation = LatLng(location.latitude, location.longitude)
@@ -338,33 +351,57 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.moveCamera(camera)
     }
 
-        override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
-        ) {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-            when (requestCode) {
-                PERM_FLAG -> {
-                    var check = true
-                    for (grant in grantResults) {
-                        if (grant != PERMISSION_GRANTED) {
-                            check = false
-                            break
-                        }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERM_FLAG -> {
+                var check = true
+                for (grant in grantResults) {
+                    if (grant != PERMISSION_GRANTED) {
+                        check = false
+                        break
                     }
-                    if (check) {
-                        startProcess()
-                    } else {
-                        Toast.makeText(
-                            this@MainActivity,
-                            "권한을 승인해야 앱을 사용할 수 있습니다.",
-                            Toast.LENGTH_LONG
-                        )
-                        finish()
-                    }
+                }
+                if (check) {
+                    startProcess()
+                } else {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "권한을 승인해야 앱을 사용할 수 있습니다.",
+                        Toast.LENGTH_LONG
+                    )
+                    finish()
                 }
             }
         }
     }
+
+
+
+    fun sendtoMineListener() {
+        val locationRequest = LocationRequest.create()
+        locationRequest.run {
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+        val intent = Intent(this, MineActivity::class.java)
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult?.let {
+                    for (location in it.locations) {
+
+                        intent.putExtra("lat", "${location.latitude}")
+                        intent.putExtra("lng", "${location.longitude}")
+
+                    }
+                    startActivity(intent)
+                }
+            }
+        }
+    }
+}
+
 
