@@ -284,6 +284,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     for ((i, location) in it.locations.withIndex()) {  // 튜플로 사용
                         Log.d("로케이션", "$i ${location.latitude}, ${location.longitude}")
                         setLastLocation(location)
+                        sendtoMineListener(location)
 
                         //거리계산
                         for (storeData in list) {
@@ -382,27 +383,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
 
-    fun sendtoMineListener() {
-        val locationRequest = LocationRequest.create()
-        locationRequest.run {
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
+    fun sendtoMineListener(location: Location) {
         val intent = Intent(this, MineActivity::class.java)
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
-                locationResult?.let {
-                    for (location in it.locations) {
+        intent.putExtra("lat", "${location.latitude}")
+        intent.putExtra("lng", "${location.longitude}")
 
-                        intent.putExtra("lat", "${location.latitude}")
-                        intent.putExtra("lng", "${location.longitude}")
-
-                    }
-                    startActivity(intent)
-                }
-            }
-        }
+        startActivity(intent)
     }
-    //안녕하세요
 }
 
 
