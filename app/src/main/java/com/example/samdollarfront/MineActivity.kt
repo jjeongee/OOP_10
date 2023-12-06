@@ -11,7 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.samdollarfront.databinding.ActivityMineBinding
 import com.google.firebase.database.*
 
-class User(val storeName: String = "",val name: String = "", val sale: String = "", val account: String = "", val bank: String = "")
+class User(val storeName: String = "",val name: String = "", val sale: String = "",
+           val account: String = "", val bank: String = "", val lpt: Double = 0.0, val lng: Double = 0.0)
 class MineActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMineBinding
@@ -29,6 +30,7 @@ class MineActivity : AppCompatActivity() {
             sharedPreferences = getPreferences(Context.MODE_PRIVATE)
 
         val backButton = findViewById<ImageButton>(R.id.btn_main2)
+        val locationButton = findViewById<Button>(R.id.locationButton)
 
 
 
@@ -40,12 +42,17 @@ class MineActivity : AppCompatActivity() {
             val sale = binding.saleInput.text.toString()
             val account = binding.accountInput.text.toString()
             val bank = binding.bankInput.text.toString()
+            val lat = 0.0
+            val lng = 0.0
             // SharedPreferences에 account 값을 저장
             saveAccount(account)
 
             if (storeName.isNotEmpty() && name.isNotEmpty() && sale.isNotEmpty() && account.isNotEmpty() && bank.isNotEmpty()) {
-                saveUser(storeName,name, sale, account, bank)
+                saveUser(storeName,name, sale, account, bank,lat,lng)
             }
+            val intent = Intent(this,OwnerActivity::class.java)
+            intent.putExtra("key", account)
+            startActivity(intent)
         }
 
         backButton.setOnClickListener {
@@ -55,13 +62,19 @@ class MineActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        locationButton.setOnClickListener {
+            intent.putExtra("tag",1)
+            val intent = Intent(this,MainActivity::class.java)
+            startActivity(intent)
+        }
+
 
         // 앱이 다시 실행될 때 저장된 account 값을 불러오고 해당 account에 대한 데이터를 Firebase에서 가져와 화면에 표시
         loadUserData()
     }
 
-    private fun saveUser(storeName: String,name: String, sale: String, account: String, bank: String) {
-        val user = User(storeName, name, sale, account, bank)
+    private fun saveUser(storeName: String,name: String, sale: String, account: String, bank: String, lat: Double, lng: Double) {
+        val user = User(storeName, name, sale, account, bank, lat, lng)
 
         // Firebase에 사용자 정보 저장
         val newUserRef = userRef.child(account) // account를 key로 사용
@@ -100,7 +113,4 @@ class MineActivity : AppCompatActivity() {
             })
         }
     }
-
-
-
 }

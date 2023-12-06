@@ -46,6 +46,7 @@ class MenuActivity : AppCompatActivity() {
 
 
         key = (intent?.getStringExtra("key") as? String) ?: ""
+        saveKey(key)
         menuRef = userRef.child(key).child("menu")
 
 
@@ -103,13 +104,6 @@ class MenuActivity : AppCompatActivity() {
 
     private fun loadDataFromSharedPreferences() {
         val menusJson = sharedPreferences.getString("menus", "")
-
-        if (menusJson.isNullOrEmpty()) {
-            // 저장된 데이터가 없을 경우 처리
-            Toast.makeText(this, "저장된 메뉴가 없습니다.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
         // JSON 형태의 문자열을 List<Menu> 객체로 변환
         val menusType = object : TypeToken<List<Menu>>() {}.type
         val loadedMenus = Gson().fromJson<List<Menu>>(menusJson, menusType)
@@ -120,6 +114,12 @@ class MenuActivity : AppCompatActivity() {
 
         // 메뉴 어댑터에 데이터 설정
 
+    }
+    private fun saveKey(key: String) {     //
+        // SharedPreferences에 account 값을 저장
+        val editor = sharedPreferences.edit()
+        editor.putString("key", key)
+        editor.apply()
     }
 }
 
