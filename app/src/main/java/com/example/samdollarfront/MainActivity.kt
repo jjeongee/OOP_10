@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         /*list.apply {
             add(StoreData("화전역 앞 붕어빵", "3333-12-3456", "카카오뱅크", "민초붕" , 37.602614, 126.869500))
             add(StoreData("행신동 역할맥 앞 붕어빵", "3333-12-7890", "카카오뱅크", "이희정", 37.615021, 126.834680))
-            add(StoreData("홍대입구 9번출구 쪽 계란빵", "1002-12-3456", "우리은행" , "노기범", 37.555726, 126.923362))
+            add(StoreData("홍대입구 9출 쪽 계란빵", "1002-12-3456", "우리은행" , "노기범", 37.555726, 126.923362))
         }*/
 
         val adapter = StoreAdapter(list, { data -> adapterOnClick(data) })
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     val lat = data.child("lat").getValue(Double::class.java) ?: 0.0
                     val lng = data.child("lng").getValue(Double::class.java) ?: 0.0
 
-                    val Store = StoreData(storename, bank, account, name, lat, lng)
+                    val Store = StoreData(storename, account, bank, name, lat, lng)
                     list.add(Store)
                 }
                 adapter.notifyDataSetChanged()

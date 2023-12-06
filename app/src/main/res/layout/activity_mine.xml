@@ -60,6 +60,14 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/txt_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="* 위치등록 버튼을 먼저 누른 후에 정보를 입력해주세요!"
+            tools:layout_editor_absoluteX="45dp"
+            tools:layout_editor_absoluteY="59dp" />
+
+        <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

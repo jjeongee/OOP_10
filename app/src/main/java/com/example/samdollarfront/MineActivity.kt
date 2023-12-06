@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.samdollarfront.databinding.ActivityMineBinding
 import com.google.firebase.database.*
@@ -20,7 +21,6 @@ class MineActivity : AppCompatActivity() {
     private lateinit var database: FirebaseDatabase
     private lateinit var userRef: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +52,7 @@ class MineActivity : AppCompatActivity() {
             if (storeName.isNotEmpty() && name.isNotEmpty() && sale.isNotEmpty() && account.isNotEmpty() && bank.isNotEmpty()) {
                 saveUser(storeName,name, sale, account, bank,lat,lng)
             }
+
             val intent = Intent(this,OwnerActivity::class.java)
             intent.putExtra("key", account)
             startActivity(intent)
@@ -66,10 +67,9 @@ class MineActivity : AppCompatActivity() {
 
         locationButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("tag",1)
+            intent.putExtra("tag", 1)
             startActivity(intent)
         }
-
 
         // 앱이 다시 실행될 때 저장된 account 값을 불러오고 해당 account에 대한 데이터를 Firebase에서 가져와 화면에 표시
         loadUserData()
