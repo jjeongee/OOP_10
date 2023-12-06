@@ -46,10 +46,13 @@ class MenuActivity : AppCompatActivity() {
 
 
         key = (intent?.getStringExtra("key") as? String) ?: ""
+
+        if (key == "")
+            key = loadKey()!!
+
         saveKey(key)
+
         menuRef = userRef.child(key).child("menu")
-
-
         menuAdapter = MenuAdapter(menus)
 
         binding.recStudents.layoutManager = LinearLayoutManager(this)
@@ -79,6 +82,7 @@ class MenuActivity : AppCompatActivity() {
         loadDataFromSharedPreferences()
 
     }
+
 
     fun moveDataToDatabase(menus: List<Menu>) {
         menuRef.removeValue()
@@ -121,7 +125,15 @@ class MenuActivity : AppCompatActivity() {
         editor.putString("key", key)
         editor.apply()
     }
+
+    private fun loadKey(): String? {
+        // SharedPreferences에서 key 값을 불러오기
+        return sharedPreferences.getString("key", null)
+    }
+
 }
+
+
 
 
 

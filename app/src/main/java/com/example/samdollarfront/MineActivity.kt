@@ -31,10 +31,16 @@ class MineActivity : AppCompatActivity() {
 
         val backButton = findViewById<ImageButton>(R.id.btn_main2)
         val locationButton = findViewById<Button>(R.id.locationButton)
-
-
-
         val enter = findViewById<Button>(R.id.enter)
+
+        locationButton.setOnClickListener {
+            val intent = Intent(this,MainActivity::class.java)
+            intent.putExtra("tag",1)
+            startActivity(intent)
+        }
+
+        val mylat = intent.getDoubleExtra("lat", 0.0)
+        val mylng = intent.getDoubleExtra("lng", 0.0)
 
         enter.setOnClickListener {
             val storeName = binding.storeNameInput.text.toString()
@@ -42,8 +48,8 @@ class MineActivity : AppCompatActivity() {
             val sale = binding.saleInput.text.toString()
             val account = binding.accountInput.text.toString()
             val bank = binding.bankInput.text.toString()
-            val lat = 0.0
-            val lng = 0.0
+            val lat = mylat
+            val lng = mylng
             // SharedPreferences에 account 값을 저장
             saveAccount(account)
 
@@ -62,11 +68,9 @@ class MineActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        locationButton.setOnClickListener {
-            intent.putExtra("tag",1)
-            val intent = Intent(this,MainActivity::class.java)
-            startActivity(intent)
-        }
+
+
+
 
 
         // 앱이 다시 실행될 때 저장된 account 값을 불러오고 해당 account에 대한 데이터를 Firebase에서 가져와 화면에 표시

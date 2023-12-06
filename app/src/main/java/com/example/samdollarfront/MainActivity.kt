@@ -146,10 +146,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             ActivityCompat.requestPermissions(this, permissions, PERM_FLAG)
         }
 
-        val receiveMineData = intent.getIntExtra("tag", 0)
+        var receiveMineData = intent.getIntExtra("tag", 0)
 
         if (receiveMineData == 1) {
+            receiveMineData = 0
             sendtoMineListener()
+            finish()
         }
     }
 
@@ -391,18 +393,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult?.let {
-                    for (location in it.locations) {
+                    if (it.locations.isNotEmpty()) {
+                        // Use the last location in the list (you can adjust this based on your requirements)
+                        val lastLocation = it.locations.last()
 
-                        intent.putExtra("lat", "${location.latitude}")
-                        intent.putExtra("lng", "${location.longitude}")
+                        intent.putExtra("lat", "${lastLocation.latitude}")
+                        intent.putExtra("lng", "${lastLocation.longitude}")
 
+                        // Start the activity outside the loop
+                        startActivity(intent)
                     }
-                    startActivity(intent)
                 }
             }
         }
     }
-    //안녕하세요
 }
 
 
