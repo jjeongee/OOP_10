@@ -13,14 +13,13 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 
 class ZzimActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var zzimAdapter: ZzimAdapter
-    private lateinit var resultLauncher : ActivityResultLauncher<Intent>
-
-    val zzimRef = FirebaseDatabase.getInstance().getReference("Zzim")
+    val database : FirebaseDatabase = FirebaseDatabase.getInstance()
     var zzimResult = ArrayList<Zzim>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,17 +30,13 @@ class ZzimActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         zzimAdapter = ZzimAdapter(zzimResult)
+        fetchFromStore(zzimAdapter)
+        fetchFromFirebase(zzimAdapter)
+        zzimAdapter.notifyDataSetChanged()
 
-        //StoreActivity에서 넘겨준 intent 데이터 받아오는 변수 생성
-        val storename = intent.getStringExtra("store_info_name")?:"찜한가게 이름"
-        val storeaccount = intent.getStringExtra("store_info_account")?:"찜한가게 계좌"
-        val storebank = intent.getStringExtra("store_info_bank")?:"찜한가게 은행"
-        val storeowner = intent.getStringExtra("store_info_ownername")?:"찜한가게 사장"
+        recyclerView.adapter = zzimAdapter
 
-        val zzimclass = Zzim(storename,storeaccount,storebank,storeowner)
-        zzimResult.add(zzimclass)
-        zzimRef.child(storename).setValue(zzimclass)
-        recyclerView.adapter = zzimAdapter //recyclerView에 어댑터 할당
+//        recyclerView.adapter = zzimAdapter //recyclerView에 어댑터 할당
 
 
         //main화면으로 되돌아오는 버튼
@@ -52,7 +47,40 @@ class ZzimActivity : AppCompatActivity() {
         }
     }
 
+    private fun fetchFromStore(zzimAdapter: ZzimAdapter) {
+        //StoreActivity에서 넘겨준 intent 데이터 받아오는 변수 생성
+        val storename = intent.getStringExtra("store_info_name")?:"찜한가게 이름"
+        val storeaccount = intent.getStringExtra("store_info_account")?:"찜한가게 계좌"
+        val storebank = intent.getStringExtra("store_info_bank")?:"찜한가게 은행"
+        val storeowner = intent.getStringExtra("store_info_ownername")?:"찜한가게 사장"
+        val zzimfromstore = Zzim(storename,storeaccount,storebank,storeowner)
+        database.getReference("Zzim").child(storename).setValue(zzimfromstore)
     }
+
+    private fun fetchFromFirebase(zzimAdapter: ZzimAdapter) {
+        val zzimRef = database.getReference()
+        zzimRef.addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onDataChange(datasnapshot: DataSnapshot) {
+                zzimResult.clear()
+                for(snapshot in datasnapshot.child("Zzim").children){
+                    val zzimstorename = snapshot.child("zzimclassstore").getValue(String::class.java)?:""
+                    val zzimstoreaccount = snapshot.child("zzimclassaccount").getValue(String::class.java)?:""
+                    val zzimstorebank = snapshot.child("zzimclassbank").getValue(String::class.java)?:""
+                    val zzimstoreowner = snapshot.child("zzimclassowner").getValue(String::class.java)?:""
+
+                    val zzimclass = Zzim(zzimstorename, zzimstoreaccount,zzimstorebank,zzimstoreowner)
+                    zzimResult.add(zzimclass)
+                }
+                zzimAdapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
+    }
+
+}
 
 
 

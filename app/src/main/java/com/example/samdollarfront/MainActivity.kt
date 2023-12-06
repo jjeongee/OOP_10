@@ -137,7 +137,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-
         // fusedLocationClient 초기화
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -391,6 +390,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         startActivity(intent)
     }
+
 }
 
 
