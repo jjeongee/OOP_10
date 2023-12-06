@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var recyclerView: RecyclerView
 
+    val receiveMineData = intent.getIntExtra("tag", 0)
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,11 +147,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             ActivityCompat.requestPermissions(this, permissions, PERM_FLAG)
         }
 
-        val receiveMineData = intent.getIntExtra("tag", 0)
 
-        if (receiveMineData == 1) {
-            sendtoMineListener()
-        }
+
+
     }
 
     private fun adapterOnClick(data: StoreData) {
@@ -284,8 +283,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     for ((i, location) in it.locations.withIndex()) {  // 튜플로 사용
                         Log.d("로케이션", "$i ${location.latitude}, ${location.longitude}")
                         setLastLocation(location)
-                        sendtoMineListener(location)
-
+                        if (receiveMineData == 1) {
+                            sendtoMineListener(location)
+                        }
                         //거리계산
                         for (storeData in list) {
                             val distance = location.distanceTo(Location("provider").apply {
