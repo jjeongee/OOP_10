@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var recyclerView: RecyclerView
 
-    val receiveMineData = intent.getIntExtra("tag", 0)
+    val receiveMineData = intent?.getIntExtra("tag", 0)
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
