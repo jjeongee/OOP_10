@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
@@ -21,6 +22,8 @@ class  OwnerActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var depositAdapter: DepositAdapter
 
+    private lateinit var databased: FirebaseDatabase
+    private lateinit var userRef: DatabaseReference  //
     private lateinit var sharedPreferences: SharedPreferences //
 
     //Firebase의 realtime database와 연결해주는 database 변수 생성
@@ -33,7 +36,9 @@ class  OwnerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_owner)
 
-        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE)  //
+        userRef = database.getReference("Store")        //
+
 
         //recyclerView와 xml의 RecyclerView 설정 연결
         recyclerView = findViewById(R.id.rv_deposit)
@@ -51,22 +56,30 @@ class  OwnerActivity : AppCompatActivity() {
 
         recyclerView.adapter = depositAdapter //recyclerView에 어댑터 할당
 
+        var key = (intent?.getStringExtra("key") as? String) ?: ""      //
+        if (key == "") {           //
+            key = sharedPreferences.getString("key","").toString()      //
+        }
+        saveKey(key)    //
+        val newUserRef = userRef.child(key).child("open") //
+
+
         //영업 여부 알려주는 버튼에 기능 부여
         startButton.setOnClickListener {
             if ( startButton.text == "영업 시작") {
+                newUserRef.setValue(1)   //
                 startButton.setText("영업 종료")
                 statustext.setText("영업 중")
                 statustext.setTextColor(Color.parseColor("#FF0000"))
             }
             else {
+                newUserRef.setValue(0)     //
                 startButton.setText("영업 시작")
                 statustext.setText("영업 종료")
                 statustext.setTextColor(Color.parseColor("#000000"))
             }
         }
 
-        val key = (intent?.getStringExtra("key") as? String) ?: ""
-        saveKey(key)        //
 
 
 
@@ -118,10 +131,9 @@ class  OwnerActivity : AppCompatActivity() {
         })
     }
 
-    private fun saveKey(Key: String) {     //
-        // SharedPreferences에 account 값을 저장
+    private fun saveKey(key: String) {     //
         val editor = sharedPreferences.edit()
-        editor.putString("Key", Key)
+        editor.putString("key", key)
         editor.apply()
     }
 
