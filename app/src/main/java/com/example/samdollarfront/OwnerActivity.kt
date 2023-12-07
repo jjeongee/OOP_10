@@ -78,6 +78,7 @@ class  OwnerActivity : AppCompatActivity() {
                 statustext.setText("영업 종료")
                 statustext.setTextColor(Color.parseColor("#000000"))
             }
+
         }
 
 

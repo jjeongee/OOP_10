@@ -36,25 +36,11 @@ class StoreActivity : AppCompatActivity() {
 
         val adapter = StoreMenuAdapter(list)
 
+
+
         database = FirebaseDatabase.getInstance().getReference().child("Store")
 
-        database.addValueEventListener(object: ValueEventListener {
-            override fun onCancelled(dataSnapshot: DatabaseError) {
-            }
 
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                list.clear()
-
-                for (storeSnapshot in dataSnapshot.children) {
-                    val menuSnapshot = storeSnapshot.child("menu")
-
-                    for (menu in menuSnapshot.children) {
-                        list.add(menu)
-                    }
-                }
-                adapter.notifyDataSetChanged()
-            }
-        })
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
@@ -65,10 +51,31 @@ class StoreActivity : AppCompatActivity() {
         }
 
         val name= intent.getStringExtra("store_info_name")
-        val account= intent.getStringExtra("store_info_account")
+        val account = intent.getStringExtra("store_info_account")
         val bank = intent.getStringExtra("store_info_bank")
         val ownername = intent.getStringExtra("store_info_ownername")
         Log.d("메인에서받은거","$name")
+
+        database.addValueEventListener(object: ValueEventListener {
+            override fun onCancelled(dataSnapshot: DatabaseError) {
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                list.clear()
+
+                for (storeSnapshot in dataSnapshot.children) {
+                    if (storeSnapshot.key == account ) {
+                        val menuSnapshot = storeSnapshot.child("menu")
+
+                        for (menu in menuSnapshot.children) {
+                            list.add(menu)
+                        }
+                    }
+
+                }
+                adapter.notifyDataSetChanged()
+            }
+        })
 
         val storeName = findViewById<TextView>(R.id.store_txt_name)
         storeName.text = name.toString()

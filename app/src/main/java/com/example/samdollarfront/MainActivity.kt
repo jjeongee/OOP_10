@@ -96,8 +96,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     val name = data.child("name").getValue(String::class.java) ?: ""
                     val lat = data.child("lat").getValue(Double::class.java) ?: 0.0
                     val lng = data.child("lng").getValue(Double::class.java) ?: 0.0
+                    val open = data.child("open").getValue(Int::class.java)?: 0
+                    val Store = StoreData(storename, account, bank, name, lat, lng, open)
 
-                    val Store = StoreData(storename, account, bank, name, lat, lng)
                     list.add(Store)
                 }
                 adapter.notifyDataSetChanged()
@@ -218,24 +219,28 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     var ownerbank = findViewById<TextView>(R.id.owner_bank)
                     var owneracc = findViewById<TextView>(R.id.owner_account)
                     var ownername = findViewById<TextView>(R.id.owner_name)
-                    //var storestatus = findViewById<TextView>(R.id.store_status)
+                    var storestatus = findViewById<TextView>(R.id.store_status)
                     storename.text = clickedStoreData?.name
                     ownerbank.text = clickedStoreData?.bank
                     owneracc.text = clickedStoreData?.account
                     ownername.text = clickedStoreData?.ownername
-                    //storestatus.text =
 
-//                    val tostore = findViewById<CardView>(R.id.card_view)
-//                    tostore.setOnClickListener {
-//                        val intent = Intent(this@MainActivity, StoreActivity::class.java)
-//                        intent.putExtra("name", "${clickedStoreData?.name}")
-//                        intent.putExtra("account", "${clickedStoreData?.account}")
-//                        intent.putExtra("bank", "${clickedStoreData?.bank}")
-//                        intent.putExtra("ownername", "${clickedStoreData?.ownername}")
-//                        startActivity(intent)
-//
-//                    }
-//                    Log.w("메인출발정보","${clickedStoreData?.name}")
+                    if (clickedStoreData?.open == 0) {
+                        storestatus.text = "영업 종료"
+                    }
+                    else if (clickedStoreData?.open == 1) {
+                        storestatus.text = "영업 중"
+                    }
+
+                    val tostore = findViewById<CardView>(R.id.card_view)
+                    tostore.setOnClickListener {
+                        val intent = Intent(this@MainActivity, StoreActivity::class.java)
+                        intent.putExtra("name", "${clickedStoreData?.name}")
+                        intent.putExtra("account", "${clickedStoreData?.account}")
+                        intent.putExtra("bank", "${clickedStoreData?.bank}")
+                        intent.putExtra("ownername", "${clickedStoreData?.ownername}")
+                       startActivity(intent)
+                    }
 
                     val copy = findViewById<ImageButton>(R.id.btn_copy_store)
                     copy.setOnClickListener {
