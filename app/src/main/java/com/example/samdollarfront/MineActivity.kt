@@ -4,15 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.samdollarfront.databinding.ActivityMineBinding
 import com.google.firebase.database.*
 
 class User(val storeName: String = "",val name: String = "", val sale: String = "",
-           val account: String = "", val bank: String = "", val lpt: Double = 0.0, val lng: Double = 0.0)
+           val account: String = "", val bank: String = "", val lat: Double = 0.0 , val lng: Double = 0.0)
 class MineActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMineBinding
@@ -42,14 +44,15 @@ class MineActivity : AppCompatActivity() {
             val sale = binding.saleInput.text.toString()
             val account = binding.accountInput.text.toString()
             val bank = binding.bankInput.text.toString()
-            val lat = 0.0
-            val lng = 0.0
+            val lat =  intent.getDoubleExtra("lat", 0.0)
+            val lng = intent.getDoubleExtra("lng", 0.0)
             // SharedPreferences에 account 값을 저장
             saveAccount(account)
 
             if (storeName.isNotEmpty() && name.isNotEmpty() && sale.isNotEmpty() && account.isNotEmpty() && bank.isNotEmpty()) {
                 saveUser(storeName,name, sale, account, bank,lat,lng)
             }
+
             val intent = Intent(this,OwnerActivity::class.java)
             intent.putExtra("key", account)
             startActivity(intent)
@@ -63,11 +66,10 @@ class MineActivity : AppCompatActivity() {
         }
 
         locationButton.setOnClickListener {
-            intent.putExtra("tag",1)
-            val intent = Intent(this,MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("tag", 1)
             startActivity(intent)
         }
-
 
         // 앱이 다시 실행될 때 저장된 account 값을 불러오고 해당 account에 대한 데이터를 Firebase에서 가져와 화면에 표시
         loadUserData()

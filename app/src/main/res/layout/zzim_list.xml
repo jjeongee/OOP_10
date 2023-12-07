@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -12,7 +12,7 @@
         tools:ignore="MissingConstraints">
 
         <TextView
-            android:id="@+id/store_zzim_name"
+            android:id="@+id/tv_zzim_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -20,26 +20,26 @@
             android:text="찜한가게이름"
             android:textStyle="bold"/>
         <TextView
-            android:id="@+id/store_zzim_bank"
+            android:id="@+id/tv_zzim_bank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_margin="5dp"
             tools:ignore="InvalidId"
-            android:text="카카오뱅크"/>
+            android:text="찜한가게계좌"/>
         <TextView
-            android:id="@+id/store_zzim_account"
+            android:id="@+id/tv_zzim_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_margin="5dp"
-            android:text="1234-56-7890" />
+            android:text="찜한가게은행" />
         <TextView
-            android:id="@+id/store_zzim_ownername"
+            android:id="@+id/tv_zzim_ownername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="사장님이름"
+            android:text="찜한가게주인"
             android:layout_margin="5dp"/>
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
